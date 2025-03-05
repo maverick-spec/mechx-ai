@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Code, ExternalLink, Github, Search } from "lucide-react";
+import { CheckCircle, Download, Search, ShoppingCart } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-const Projects = () => {
+const PremadeProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,7 +28,7 @@ const Projects = () => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.from("projects").select("*");
+      const { data, error } = await supabase.from("premade_projects").select("*");
       
       if (error) {
         throw error;
@@ -36,9 +36,9 @@ const Projects = () => {
       
       setProjects(data || []);
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching premade projects:", error);
       toast({
-        title: "Error fetching projects",
+        title: "Error fetching pre-made projects",
         description: "Please try again later.",
         variant: "destructive",
       });
@@ -60,22 +60,36 @@ const Projects = () => {
   const categories = ["all", ...new Set(projects.map(project => project.category))];
   const difficulties = ["all", "beginner", "intermediate", "advanced"];
 
+  const handlePurchase = (project) => {
+    toast({
+      title: "Added to cart!",
+      description: `${project.title} has been added to your cart.`,
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col w-full">
       <Navbar />
       <main className="flex-1 pt-24">
         <div className="container px-4 md:px-6 py-12">
           <SectionHeading
-            title="Projects Gallery"
-            subtitle="Explore our curated collection of mechatronics and robotics projects"
+            title="Pre-made Projects"
+            subtitle="Ready-to-use mechatronics project kits with complete code and documentation"
           />
 
+          {/* Info Banner */}
+          <div className="bg-primary/10 p-4 rounded-lg mb-8 border border-primary/20">
+            <p className="text-sm text-center">
+              All pre-made projects include complete source code, documentation, and direct support from our team.
+            </p>
+          </div>
+
           {/* Search and Filter Controls */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search projects..."
+                placeholder="Search pre-made projects..."
                 className="pl-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -128,7 +142,7 @@ const Projects = () => {
           ) : filteredProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project) => (
-                <Card key={project.id} className="overflow-hidden hover-scale border-border/40 hover:border-primary/20">
+                <Card key={project.id} className="overflow-hidden hover-scale border-border/40 hover:border-primary/20 flex flex-col">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.image_url}
@@ -143,40 +157,56 @@ const Projects = () => {
                         {project.difficulty}
                       </Badge>
                     </div>
+                    <div className="absolute bottom-2 left-2">
+                      <Badge variant="default" className="bg-mechatronix-600 text-white font-bold px-3 py-1">
+                        ${project.price}
+                      </Badge>
+                    </div>
                   </div>
                   <CardHeader className="p-4 pb-2">
                     <CardTitle className="text-xl">{project.title}</CardTitle>
-                    <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {project.tags?.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="bg-secondary text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
+                  <CardContent className="p-4 pt-0 flex-grow">
+                    <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">Includes:</h4>
+                      <ul className="space-y-1">
+                        {project.features?.map((feature, index) => (
+                          <li key={index} className="text-xs flex items-start">
+                            <CheckCircle className="h-3.5 w-3.5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                        {!project.features?.length && (
+                          <li className="text-xs flex items-start">
+                            <CheckCircle className="h-3.5 w-3.5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span>Complete source code</span>
+                          </li>
+                        )}
+                      </ul>
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 flex justify-between border-t border-border/50">
-                    <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary">
-                      <Code className="h-3.5 w-3.5" />
-                      View Code
+                    <Button variant="outline" size="sm" className="text-xs gap-1">
+                      <Download className="h-3.5 w-3.5" />
+                      Details
                     </Button>
-                    {project.project_url && (
-                      <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary" asChild>
-                        <a href={project.project_url} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-3.5 w-3.5" />
-                          Visit Project
-                        </a>
-                      </Button>
-                    )}
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="text-xs gap-1 bg-mechatronix-600 hover:bg-mechatronix-700"
+                      onClick={() => handlePurchase(project)}
+                    >
+                      <ShoppingCart className="h-3.5 w-3.5" />
+                      Purchase
+                    </Button>
                   </CardFooter>
                 </Card>
               ))}
             </div>
           ) : (
             <div className="text-center py-20 border border-dashed rounded-lg">
-              <h3 className="text-xl font-medium mb-2">No projects found</h3>
+              <h3 className="text-xl font-medium mb-2">No pre-made projects found</h3>
               <p className="text-muted-foreground mb-4">Try adjusting your search or filters</p>
               <Button onClick={() => {
                 setSearchQuery("");
@@ -194,4 +224,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default PremadeProjects;

@@ -10,6 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Projects", href: "/projects" },
+  { name: "Pre-made Projects", href: "/premade-projects" },
   { name: "Tutorials", href: "/tutorials" },
   { name: "Team Up", href: "/team-up" },
   { name: "Community", href: "/community" },
@@ -24,6 +25,11 @@ export const Navbar = () => {
   // Scroll to top when route changes
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Close mobile menu when route changes
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+      document.body.style.overflow = "";
+    }
   }, [location.pathname]);
 
   useEffect(() => {
@@ -43,6 +49,19 @@ export const Navbar = () => {
       document.body.style.overflow = "";
     }
   };
+
+  // Close mobile menu when window is resized to desktop size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+        document.body.style.overflow = "";
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [mobileMenuOpen]);
 
   return (
     <header
@@ -71,7 +90,12 @@ export const Navbar = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="px-3 py-2 text-sm text-foreground/90 hover:text-foreground transition-colors rounded-md hover:bg-muted font-jakarta"
+              className={cn(
+                "px-3 py-2 text-sm transition-colors rounded-md font-jakarta",
+                location.pathname === link.href 
+                  ? "text-foreground bg-muted" 
+                  : "text-foreground/80 hover:text-foreground hover:bg-muted/60"
+              )}
               onClick={() => window.scrollTo(0, 0)}
             >
               {link.name}
@@ -101,11 +125,11 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Fixed Positioning */}
       {isMobile && (
         <div
           className={cn(
-            "fixed inset-0 bg-background z-40 transform transition-transform duration-300 ease-in-out pt-20",
+            "fixed inset-0 bg-background z-40 transition-transform duration-300 ease-in-out pt-20",
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           )}
         >
@@ -114,9 +138,15 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className="px-4 py-3 text-lg border-b border-border hover:bg-muted rounded-md transition-colors font-jakarta"
+                className={cn(
+                  "px-4 py-3 text-lg border-b border-border rounded-md transition-colors font-jakarta",
+                  location.pathname === link.href 
+                    ? "bg-muted text-foreground" 
+                    : "hover:bg-muted/60"
+                )}
                 onClick={() => {
                   setMobileMenuOpen(false);
+                  document.body.style.overflow = "";
                   window.scrollTo(0, 0);
                 }}
               >

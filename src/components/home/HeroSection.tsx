@@ -1,23 +1,55 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Zap } from "lucide-react";
 
+const textPhrases = [
+  "AI-Powered Mechatronics Projects",
+  "Industrial Robotics Solutions",
+  "Smart Automation Systems",
+  "IoT-Connected Devices",
+  "Embedded Control Systems"
+];
+
 export const HeroSection = () => {
   const [typedText, setTypedText] = useState("");
-  const textToType = "AI-Powered Mechatronics Projects";
+  const [phraseIndex, setPhraseIndex] = useState(0);
   const [textIndex, setTextIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const typingSpeed = useRef(100);
+  const deletingSpeed = useRef(50);
+  const pauseDelay = useRef(2000);
 
   useEffect(() => {
-    if (textIndex < textToType.length) {
-      const timeout = setTimeout(() => {
-        setTypedText(prev => prev + textToType[textIndex]);
+    const currentPhrase = textPhrases[phraseIndex];
+    
+    const timeout = setTimeout(() => {
+      // Typing text
+      if (!isDeleting && textIndex < currentPhrase.length) {
+        setTypedText(prev => prev + currentPhrase[textIndex]);
         setTextIndex(prev => prev + 1);
-      }, 100);
-      
-      return () => clearTimeout(timeout);
-    }
-  }, [textIndex]);
+        typingSpeed.current = 100 - Math.random() * 50;
+      } 
+      // Pause before deleting
+      else if (!isDeleting && textIndex === currentPhrase.length) {
+        setTimeout(() => setIsDeleting(true), pauseDelay.current);
+      } 
+      // Deleting text
+      else if (isDeleting && typedText.length > 0) {
+        setTypedText(prev => prev.slice(0, -1));
+        deletingSpeed.current = 50 - Math.random() * 20;
+      } 
+      // Move to next phrase
+      else if (isDeleting && typedText.length === 0) {
+        setIsDeleting(false);
+        setPhraseIndex(prev => (prev + 1) % textPhrases.length);
+        setTextIndex(0);
+      }
+    }, isDeleting ? deletingSpeed.current : typingSpeed.current);
+    
+    return () => clearTimeout(timeout);
+  }, [textIndex, isDeleting, phraseIndex, typedText]);
 
   return (
     <section className="relative w-full overflow-hidden pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-20">
@@ -36,7 +68,7 @@ export const HeroSection = () => {
             Boost Your Engineering Skills With{" "}
             <span className="relative">
               <span className="text-gradient">{typedText}</span>
-              <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: textIndex < textToType.length ? 'block' : 'none' }}></span>
+              <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
             </span>
           </h1>
           
@@ -46,12 +78,19 @@ export const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <Button size="lg" className="bg-mechatronix-600 hover:bg-mechatronix-700">
-              Explore Projects
+            <Button size="lg" className="bg-mechatronix-600 hover:bg-mechatronix-700" asChild>
+              <Link to="/projects">Explore Projects</Link>
             </Button>
-            <Button size="lg" variant="outline" className="group">
-              <SearchIcon className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
-              Search for Ideas
+            <Button size="lg" variant="outline" className="group" asChild>
+              <Link to="/premade-projects">
+                Pre-made Projects
+              </Link>
+            </Button>
+            <Button size="lg" variant="secondary" className="group" asChild>
+              <Link to="/projects">
+                <SearchIcon className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
+                Search for Ideas
+              </Link>
             </Button>
           </div>
         </div>

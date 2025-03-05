@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
+import PremadeProjects from "./pages/PremadeProjects";
 import Tutorials from "./pages/Tutorials";
 import TeamUp from "./pages/TeamUp";
 import Community from "./pages/Community";
@@ -42,6 +43,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/premade-projects" element={<PremadeProjects />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/team-up" element={<TeamUp />} />
             <Route path="/community" element={<Community />} />
