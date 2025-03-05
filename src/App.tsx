@@ -32,6 +32,9 @@ const App = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    // Set the document title to the new futuristic name
+    document.title = "NexTech Mechatronics | Future Engineering Solutions";
   }, []);
 
   return (

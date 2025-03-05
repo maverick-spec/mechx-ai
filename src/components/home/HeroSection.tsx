@@ -61,11 +61,11 @@ export const HeroSection = () => {
         <div className="flex flex-col items-center text-center space-y-4 max-w-4xl mx-auto">
           <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-muted border border-muted-foreground/20 mb-2 animate-fade-in">
             <Zap className="h-3.5 w-3.5 mr-1.5 text-mechatronix-600" />
-            <span>Discover next-level engineering projects</span>
+            <span>Next-gen engineering solutions</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
-            Boost Your Engineering Skills With{" "}
+            <span className="text-gradient">NexTech Mechatronics</span>: Future-Proof Your Engineering With{" "}
             <span className="relative">
               <span className="text-gradient">{typedText}</span>
               <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
@@ -73,8 +73,8 @@ export const HeroSection = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in font-jakarta" style={{ animationDelay: "0.2s" }}>
-            Find innovative projects, access pre-made code, watch tutorials, and collaborate 
-            with fellow Mechatronics students to build amazing robotics projects.
+            Discover breakthrough projects, access pre-made solutions, and collaborate 
+            with the global community to build tomorrow's mechatronics innovations today.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>

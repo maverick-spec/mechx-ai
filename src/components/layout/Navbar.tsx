@@ -1,164 +1,147 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ThemeToggle } from "./ThemeToggle";
-import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { Menu, X, Search, ChevronDown, Layers, Lightbulb, Users, MessageCircle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Projects", href: "/projects" },
-  { name: "Pre-made Projects", href: "/premade-projects" },
-  { name: "Tutorials", href: "/tutorials" },
-  { name: "Team Up", href: "/team-up" },
-  { name: "Community", href: "/community" },
-];
+import { useMobileMenu } from "@/hooks/use-mobile-menu";
 
 export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
   const location = useLocation();
-
-  // Scroll to top when route changes
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // Close mobile menu when route changes
-    if (mobileMenuOpen) {
-      setMobileMenuOpen(false);
-      document.body.style.overflow = "";
-    }
-  }, [location.pathname]);
+  const { isOpen, toggleMenu, navigateAndClose, closeMenu } = useMobileMenu();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const offset = window.scrollY;
+      setIsScrolled(offset > 10);
     };
-
+    
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+  useEffect(() => {
+    // Close mobile menu on route change
+    closeMenu();
+  }, [location.pathname]);
+
+  const isActive = (path) => {
+    if (path === "/") {
+      return location.pathname === path;
     }
+    return location.pathname.startsWith(path);
   };
 
-  // Close mobile menu when window is resized to desktop size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768 && mobileMenuOpen) {
-        setMobileMenuOpen(false);
-        document.body.style.overflow = "";
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [mobileMenuOpen]);
+  const navItems = [
+    { text: "Projects", path: "/projects", icon: <Layers className="h-4 w-4" /> },
+    { text: "Pre-made Projects", path: "/premade-projects", icon: <Layers className="h-4 w-4" /> },
+    { text: "Tutorials", path: "/tutorials", icon: <Lightbulb className="h-4 w-4" /> },
+    { text: "Team Up", path: "/team-up", icon: <Users className="h-4 w-4" /> },
+    { text: "Community", path: "/community", icon: <MessageCircle className="h-4 w-4" /> },
+    { text: "FAQs", path: "/faqs", icon: <HelpCircle className="h-4 w-4" /> }
+  ];
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-200",
-        isScrolled
-          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-sm py-3"
-          : "bg-transparent py-4"
-      )}
-    >
-      <div className="container px-4 md:px-6 flex items-center justify-between">
-        <Link
-          to="/"
-          className="flex items-center space-x-2 transition-opacity hover:opacity-90"
-          onClick={() => window.scrollTo(0, 0)}
-        >
-          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
-            <span className="text-white text-xl font-syne">M</span>
-          </div>
-          <span className="font-syne font-bold text-lg md:text-xl">MechatronixHub</span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.href}
-              className={cn(
-                "px-3 py-2 text-sm transition-colors rounded-md font-jakarta",
-                location.pathname === link.href 
-                  ? "text-foreground bg-muted" 
-                  : "text-foreground/80 hover:text-foreground hover:bg-muted/60"
-              )}
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              {link.name}
+    <>
+      <header className={cn(
+        "fixed top-0 w-full z-50 transition-all duration-300",
+        isScrolled || isOpen ? "bg-background/80 backdrop-blur-lg shadow-sm" : "bg-transparent"
+      )}>
+        <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center gap-1 md:gap-10">
+            <Link to="/" className="flex items-center gap-2" aria-label="NexTech Mechatronics">
+              <span className="text-gradient font-bold text-lg md:text-xl font-syne">NexTech Mechatronics</span>
             </Link>
-          ))}
-          <ThemeToggle />
-          <Button size="sm" className="ml-2 bg-mechatronix-600 hover:bg-mechatronix-700 font-jakarta">
-            Sign Up
-          </Button>
-        </nav>
+            
+            <nav className="hidden md:flex space-x-1">
+              {navItems.map((item) => (
+                <Button
+                  key={item.text}
+                  variant="ghost"
+                  asChild
+                  className={cn(
+                    "text-sm transition-colors",
+                    isActive(item.path) && "bg-muted"
+                  )}
+                >
+                  <Link to={item.path}>{item.text}</Link>
+                </Button>
+              ))}
+            </nav>
+          </div>
 
-        {/* Mobile Navigation Toggle */}
-        <div className="flex items-center md:hidden space-x-2">
-          <ThemeToggle />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleMobileMenuToggle}
-            aria-label="Toggle Menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </Button>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:block">
+              <Button variant="ghost" className="w-9 px-0" aria-label="Search">
+                <Search className="h-4 w-4" />
+              </Button>
+              <ThemeToggle />
+            </div>
+            <Button variant="default" size="sm" asChild className="hidden md:inline-flex bg-mechatronix-600 hover:bg-mechatronix-700">
+              <Link to="/contact">Contact Us</Link>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden menu-trigger"
+              aria-label={isOpen ? "Close Menu" : "Open Menu"}
+              onClick={toggleMenu}
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-background md:hidden transition-all duration-300 mobile-menu",
+          isOpen 
+            ? "opacity-100 pointer-events-auto translate-x-0" 
+            : "opacity-0 pointer-events-none translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full pt-20 pb-6 px-6 overflow-auto">
+          <nav className="flex flex-col space-y-1 mb-6">
+            {navItems.map((item) => (
+              <Button
+                key={item.text}
+                variant="ghost"
+                className={cn(
+                  "justify-start text-lg h-12",
+                  isActive(item.path) && "bg-muted"
+                )}
+                onClick={() => navigateAndClose(item.path)}
+              >
+                {item.icon}
+                <span className="ml-2">{item.text}</span>
+              </Button>
+            ))}
+          </nav>
+          
+          <div className="flex flex-col space-y-4 mt-auto">
+            <Button onClick={() => navigateAndClose("/contact")} className="bg-mechatronix-600 hover:bg-mechatronix-700">
+              Contact Us
+            </Button>
+            <div className="flex items-center justify-between">
+              <Link
+                to="/docs"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                onClick={closeMenu}
+              >
+                Documentation
+              </Link>
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Mobile Menu - Fixed Positioning */}
-      {isMobile && (
-        <div
-          className={cn(
-            "fixed inset-0 bg-background z-40 transition-transform duration-300 ease-in-out pt-20",
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <nav className="container px-4 py-6 flex flex-col space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={cn(
-                  "px-4 py-3 text-lg border-b border-border rounded-md transition-colors font-jakarta",
-                  location.pathname === link.href 
-                    ? "bg-muted text-foreground" 
-                    : "hover:bg-muted/60"
-                )}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  document.body.style.overflow = "";
-                  window.scrollTo(0, 0);
-                }}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Button className="mt-4 bg-mechatronix-600 hover:bg-mechatronix-700 font-jakarta">
-              Sign Up
-            </Button>
-          </nav>
-        </div>
-      )}
-    </header>
+    </>
   );
 };
