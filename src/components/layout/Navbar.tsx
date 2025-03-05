@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,12 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  // Scroll to top when route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,11 +57,12 @@ export const Navbar = () => {
         <Link
           to="/"
           className="flex items-center space-x-2 transition-opacity hover:opacity-90"
+          onClick={() => window.scrollTo(0, 0)}
         >
           <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
-            <span className="text-white text-xl font-bold">M</span>
+            <span className="text-white text-xl font-syne">M</span>
           </div>
-          <span className="font-bold text-lg md:text-xl">MechatronixHub</span>
+          <span className="font-syne font-bold text-lg md:text-xl">MechatronixHub</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -64,13 +71,14 @@ export const Navbar = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="px-3 py-2 text-sm text-foreground/90 hover:text-foreground transition-colors rounded-md hover:bg-muted"
+              className="px-3 py-2 text-sm text-foreground/90 hover:text-foreground transition-colors rounded-md hover:bg-muted font-jakarta"
+              onClick={() => window.scrollTo(0, 0)}
             >
               {link.name}
             </Link>
           ))}
           <ThemeToggle />
-          <Button size="sm" className="ml-2 bg-mechatronix-600 hover:bg-mechatronix-700">
+          <Button size="sm" className="ml-2 bg-mechatronix-600 hover:bg-mechatronix-700 font-jakarta">
             Sign Up
           </Button>
         </nav>
@@ -106,13 +114,16 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className="px-4 py-3 text-lg border-b border-border hover:bg-muted rounded-md transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 text-lg border-b border-border hover:bg-muted rounded-md transition-colors font-jakarta"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
               >
                 {link.name}
               </Link>
             ))}
-            <Button className="mt-4 bg-mechatronix-600 hover:bg-mechatronix-700">
+            <Button className="mt-4 bg-mechatronix-600 hover:bg-mechatronix-700 font-jakarta">
               Sign Up
             </Button>
           </nav>

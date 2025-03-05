@@ -32,7 +32,7 @@ export const HeroSection = () => {
             <span>Discover next-level engineering projects</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
             Boost Your Engineering Skills With{" "}
             <span className="relative">
               <span className="text-gradient">{typedText}</span>
@@ -40,7 +40,7 @@ export const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in font-jakarta" style={{ animationDelay: "0.2s" }}>
             Find innovative projects, access pre-made code, watch tutorials, and collaborate 
             with fellow Mechatronics students to build amazing robotics projects.
           </p>
@@ -61,8 +61,8 @@ export const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent h-1/3 bottom-0 z-10"></div>
           <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
             <img 
-              src="/lovable-uploads/fc06feed-5e75-4942-ad80-20a38951af76.png" 
-              alt="MechatronixHub Platform Interface" 
+              src="/lovable-uploads/ee6bfad7-d15b-410b-a32b-c28526235f62.png" 
+              alt="Engineer working with industrial robot" 
               className="w-full h-auto object-cover"
             />
           </div>

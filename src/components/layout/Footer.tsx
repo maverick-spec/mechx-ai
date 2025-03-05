@@ -22,6 +22,10 @@ const footerLinks = {
 };
 
 export const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <footer className="w-full bg-muted/50 border-t border-border">
       <div className="container px-4 md:px-6 py-12 md:py-16">
@@ -30,26 +34,28 @@ export const Footer = () => {
             <Link
               to="/"
               className="flex items-center space-x-2 transition-opacity hover:opacity-90"
+              onClick={scrollToTop}
             >
               <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white text-xl font-bold">M</span>
+                <span className="text-white text-xl font-syne font-bold">M</span>
               </div>
-              <span className="font-bold text-lg">MechatronixHub</span>
+              <span className="font-syne font-bold text-lg">MechatronixHub</span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs">
+            <p className="text-sm text-muted-foreground max-w-xs font-jakarta">
               A platform for Mechatronics Engineering students to find project ideas, 
               access resources, and collaborate with peers.
             </p>
           </div>
 
           <div>
-            <h3 className="font-medium text-sm mb-4">Quick Links</h3>
+            <h3 className="font-syne font-bold text-sm mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
+                    onClick={scrollToTop}
                   >
                     {link.name}
                   </Link>
@@ -59,13 +65,14 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-sm mb-4">Support</h3>
+            <h3 className="font-syne font-bold text-sm mb-4">Support</h3>
             <ul className="space-y-2">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
+                    onClick={scrollToTop}
                   >
                     {link.name}
                   </Link>
@@ -75,13 +82,14 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-sm mb-4">Legal</h3>
+            <h3 className="font-syne font-bold text-sm mb-4">Legal</h3>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
+                    onClick={scrollToTop}
                   >
                     {link.name}
                   </Link>
@@ -92,7 +100,7 @@ export const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground font-jakarta">
             © {new Date().getFullYear()} MechatronixHub. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
