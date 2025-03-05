@@ -1,8 +1,9 @@
 
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Zap } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const textPhrases = [
   "AI-Powered Mechatronics Projects",
@@ -17,6 +18,8 @@ export const HeroSection = () => {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [textIndex, setTextIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const typingSpeed = useRef(100);
   const deletingSpeed = useRef(50);
   const pauseDelay = useRef(2000);
@@ -51,6 +54,13 @@ export const HeroSection = () => {
     return () => clearTimeout(timeout);
   }, [textIndex, isDeleting, phraseIndex, typedText]);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/projects?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
     <section className="relative w-full overflow-hidden pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-20">
       {/* Gradient Background */}
@@ -65,7 +75,7 @@ export const HeroSection = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
-            <span className="text-gradient">NexTech Mechatronics</span>: Future-Proof Your Engineering With{" "}
+            <span className="text-gradient">TechCraft</span>: Future-Proof Your Engineering With{" "}
             <span className="relative">
               <span className="text-gradient">{typedText}</span>
               <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
@@ -86,13 +96,22 @@ export const HeroSection = () => {
                 Pre-made Projects
               </Link>
             </Button>
-            <Button size="lg" variant="secondary" className="group" asChild>
-              <Link to="/projects">
-                <SearchIcon className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
-                Search for Ideas
-              </Link>
-            </Button>
           </div>
+
+          {/* Search Form */}
+          <form onSubmit={handleSearch} className="w-full max-w-md mt-4 flex gap-2 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <Input 
+              type="text" 
+              placeholder="Search for projects..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1"
+            />
+            <Button type="submit">
+              <SearchIcon className="mr-2 h-4 w-4" />
+              Search
+            </Button>
+          </form>
         </div>
 
         {/* Hero Image */}

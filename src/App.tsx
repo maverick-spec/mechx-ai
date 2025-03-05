@@ -18,6 +18,7 @@ import Documentation from "./pages/Documentation";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
@@ -33,8 +34,8 @@ const App = () => {
       document.documentElement.classList.remove("dark");
     }
 
-    // Set the document title to the new futuristic name
-    document.title = "NexTech Mechatronics | Future Engineering Solutions";
+    // Set the document title to the new name
+    document.title = "TechCraft | Future Engineering Solutions";
   }, []);
 
   return (
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/team-up" element={<TeamUp />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/docs" element={<Documentation />} />

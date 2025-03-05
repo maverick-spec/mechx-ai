@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -14,16 +15,23 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const Projects = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
   const { toast } = useToast();
 
   useEffect(() => {
+    // Set the search query from URL parameters
+    const query = searchParams.get("search");
+    if (query) {
+      setSearchQuery(query);
+    }
+    
     fetchProjects();
-  }, []);
+  }, [searchParams]);
 
   const fetchProjects = async () => {
     try {
@@ -45,6 +53,11 @@ const Projects = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearchParams({ search: searchQuery });
   };
 
   const filteredProjects = projects.filter(project => {
@@ -72,15 +85,16 @@ const Projects = () => {
 
           {/* Search and Filter Controls */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 mt-8">
-            <div className="relative">
+            <form onSubmit={handleSearchSubmit} className="relative flex">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 placeholder="Search projects..."
-                className="pl-10"
+                className="pl-10 flex-1"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+              <Button type="submit" className="ml-2">Search</Button>
+            </form>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by category" />
@@ -182,6 +196,7 @@ const Projects = () => {
                 setSearchQuery("");
                 setCategoryFilter("all");
                 setDifficultyFilter("all");
+                setSearchParams({});
               }}>
                 Clear Filters
               </Button>

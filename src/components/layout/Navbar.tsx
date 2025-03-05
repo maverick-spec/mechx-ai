@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { Menu, X, Search, ChevronDown, Layers, Lightbulb, Users, MessageCircle, HelpCircle } from "lucide-react";
+import { Menu, X, Layers, Lightbulb, Users, MessageCircle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileMenu } from "@/hooks/use-mobile-menu";
 
@@ -43,6 +43,7 @@ export const Navbar = () => {
     { text: "Tutorials", path: "/tutorials", icon: <Lightbulb className="h-4 w-4" /> },
     { text: "Team Up", path: "/team-up", icon: <Users className="h-4 w-4" /> },
     { text: "Community", path: "/community", icon: <MessageCircle className="h-4 w-4" /> },
+    { text: "Pricing", path: "/pricing", icon: <HelpCircle className="h-4 w-4" /> },
     { text: "FAQs", path: "/faqs", icon: <HelpCircle className="h-4 w-4" /> }
   ];
 
@@ -54,8 +55,8 @@ export const Navbar = () => {
       )}>
         <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center gap-1 md:gap-10">
-            <Link to="/" className="flex items-center gap-2" aria-label="NexTech Mechatronics">
-              <span className="text-gradient font-bold text-lg md:text-xl font-syne">NexTech Mechatronics</span>
+            <Link to="/" className="flex items-center gap-2" aria-label="TechCraft">
+              <span className="text-gradient font-bold text-lg md:text-xl font-syne">TechCraft</span>
             </Link>
             
             <nav className="hidden md:flex space-x-1">
@@ -77,9 +78,6 @@ export const Navbar = () => {
 
           <div className="flex items-center gap-2">
             <div className="hidden sm:block">
-              <Button variant="ghost" className="w-9 px-0" aria-label="Search">
-                <Search className="h-4 w-4" />
-              </Button>
               <ThemeToggle />
             </div>
             <Button variant="default" size="sm" asChild className="hidden md:inline-flex bg-mechatronix-600 hover:bg-mechatronix-700">
