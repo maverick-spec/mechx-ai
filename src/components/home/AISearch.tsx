@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Sparkles, BookOpen, Bot } from "lucide-react";
+import { Search, Sparkles, BookOpen, Bot, RotateCw, Cpu } from "lucide-react";
 
 export const AISearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
