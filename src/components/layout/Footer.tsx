@@ -39,7 +39,7 @@ export const Footer = () => {
               <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
                 <span className="text-white text-xl font-syne font-bold">M</span>
               </div>
-              <span className="font-syne font-bold text-lg">MechatronixHub</span>
+              <span className="font-syne font-bold text-lg">Mechx AI</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs font-jakarta">
               A platform for Mechatronics Engineering students to find project ideas, 
@@ -101,7 +101,7 @@ export const Footer = () => {
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground font-jakarta">
-            © {new Date().getFullYear()} MechatronixHub. All rights reserved.
+            © {new Date().getFullYear()} Mechx AI. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-muted-foreground hover:text-foreground">

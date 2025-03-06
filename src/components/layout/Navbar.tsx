@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -53,36 +53,12 @@ export const Navbar = () => {
         "fixed top-0 w-full z-50 transition-all duration-300",
         isScrolled || isOpen ? "bg-background/80 backdrop-blur-lg shadow-sm" : "bg-transparent"
       )}>
-        <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center gap-1 md:gap-10">
-            <Link to="/" className="flex items-center gap-2" aria-label="TechCraft">
-              <span className="text-gradient font-bold text-lg md:text-xl font-syne">TechCraft</span>
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between h-auto md:h-20">
+          <div className="flex items-center justify-between w-full md:w-auto py-4 md:py-0">
+            <Link to="/" className="flex items-center gap-2" aria-label="Mechx AI">
+              <span className="text-gradient font-bold text-lg md:text-xl font-syne">Mechx AI</span>
             </Link>
             
-            <nav className="hidden md:flex space-x-1">
-              {navItems.map((item) => (
-                <Button
-                  key={item.text}
-                  variant="ghost"
-                  asChild
-                  className={cn(
-                    "text-sm transition-colors",
-                    isActive(item.path) && "bg-muted"
-                  )}
-                >
-                  <Link to={item.path}>{item.text}</Link>
-                </Button>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:block">
-              <ThemeToggle />
-            </div>
-            <Button variant="default" size="sm" asChild className="hidden md:inline-flex bg-mechatronix-600 hover:bg-mechatronix-700">
-              <Link to="/contact">Contact Us</Link>
-            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -91,6 +67,29 @@ export const Navbar = () => {
               onClick={toggleMenu}
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
+          
+          <nav className="hidden md:flex items-center justify-center space-x-1 flex-1">
+            {navItems.map((item) => (
+              <Button
+                key={item.text}
+                variant="ghost"
+                asChild
+                className={cn(
+                  "text-sm transition-colors",
+                  isActive(item.path) && "bg-muted"
+                )}
+              >
+                <Link to={item.path}>{item.text}</Link>
+              </Button>
+            ))}
+          </nav>
+
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="default" size="sm" asChild className="bg-mechatronix-600 hover:bg-mechatronix-700">
+              <Link to="/contact">Contact Us</Link>
             </Button>
           </div>
         </div>

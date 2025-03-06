@@ -35,7 +35,7 @@ const App = () => {
     }
 
     // Set the document title to the new name
-    document.title = "TechCraft | Future Engineering Solutions";
+    document.title = "Mechx AI | Future Engineering Solutions";
   }, []);
 
   return (

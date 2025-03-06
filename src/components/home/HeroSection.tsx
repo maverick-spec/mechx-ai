@@ -76,10 +76,10 @@ export const HeroSection = () => {
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
             Future-Proof Your Engineering With{" "}
-            <span className="relative">
+            <div className="inline-block relative">
               <span className="text-gradient">{typedText}</span>
               <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
-            </span>
+            </div>
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in font-jakarta" style={{ animationDelay: "0.2s" }}>
