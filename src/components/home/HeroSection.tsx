@@ -4,13 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Safari } from "../magicui/safari";
+import { Cover } from "../ui/cover";
 
 const textPhrases = [
-  "AI-Powered Mechatronics Projects",
-  "Industrial Robotics Solutions",
-  "Smart Automation Systems",
-  "IoT-Connected Devices",
-  "Embedded Control Systems"
+ "AI",
+"Robotics",
+"Automation",
+"IoT"
 ];
 
 export const HeroSection = () => {
@@ -75,7 +76,7 @@ export const HeroSection = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
-            Future-Proof Your Engineering With{" "}
+            Future-Proof Your <Cover>Engineering</Cover> With{" "}
             <div className="inline-block relative">
               <span className="text-gradient">{typedText}</span>
               <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
@@ -116,16 +117,15 @@ export const HeroSection = () => {
 
         {/* Hero Image */}
         <div className="mt-12 md:mt-16 relative max-w-5xl mx-auto animate-fade-in" style={{ animationDelay: "0.6s" }}>
-          <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent h-1/3 bottom-0 z-10"></div>
-          <div className="rounded-xl overflow-hidden border border-border shadow-2xl">
-            <img 
-              src="/lovable-uploads/ee6bfad7-d15b-410b-a32b-c28526235f62.png" 
-              alt="Engineer working with industrial robot" 
-              className="w-full h-auto object-cover"
-            />
           </div>
+              <div className="relative">
+      <Safari
+        url="mechx-ai.xyz"
+        className="size-full"
+        imageSrc="/lovable-uploads/ee6bfad7-d15b-410b-a32b-c28526235f62.png"
+      />
+    </div>
         </div>
-      </div>
     </section>
   );
 };
