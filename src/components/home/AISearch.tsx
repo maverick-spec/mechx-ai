@@ -2,11 +2,10 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { WarpBackground } from "@/components/ui/warp-background";
 
 export const AISearch = () => {
   return (
-    <WarpBackground className="w-full p-6 md:p-8 rounded-xl">
+    <div className="w-full p-6 md:p-8 rounded-xl bg-slate-50 dark:bg-slate-900">
       <div className="text-center mb-6 space-y-2">
         <h2 className="text-2xl md:text-3xl font-syne font-bold">AI-Powered Project Search</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -26,6 +25,6 @@ export const AISearch = () => {
           Search Projects
         </Button>
       </div>
-    </WarpBackground>
+    </div>
   );
 };
