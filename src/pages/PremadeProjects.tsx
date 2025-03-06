@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -162,7 +163,7 @@ const PremadeProjects = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedProjects.map((project) => (
                   <Card key={project.id} className="overflow-hidden hover-scale border-border/40 hover:border-primary/20 flex flex-col">
-                    <div className="relative h-48 overflow-hidden">
+                    <Link to={`/premade-projects/${project.id}`} className="block h-48 overflow-hidden">
                       <img
                         src={project.image_url}
                         alt={project.title}
@@ -181,9 +182,13 @@ const PremadeProjects = () => {
                           ₹{(project.price * 83).toFixed(0)}
                         </Badge>
                       </div>
-                    </div>
+                    </Link>
                     <CardHeader className="p-4 pb-2">
-                      <CardTitle className="text-xl">{project.title}</CardTitle>
+                      <CardTitle className="text-xl">
+                        <Link to={`/premade-projects/${project.id}`} className="hover:text-primary transition-colors">
+                          {project.title}
+                        </Link>
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="p-4 pt-0 flex-grow">
                       <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
@@ -206,9 +211,11 @@ const PremadeProjects = () => {
                       </div>
                     </CardContent>
                     <CardFooter className="p-4 flex justify-between border-t border-border/50">
-                      <Button variant="outline" size="sm" className="text-xs gap-1">
-                        <Download className="h-3.5 w-3.5" />
-                        Details
+                      <Button variant="outline" size="sm" className="text-xs gap-1" asChild>
+                        <Link to={`/premade-projects/${project.id}`}>
+                          <Download className="h-3.5 w-3.5" />
+                          Details
+                        </Link>
                       </Button>
                       <Button 
                         variant="default" 

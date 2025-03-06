@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 const footerLinks = {
   quickLinks: [
@@ -25,6 +26,41 @@ export const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
+
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const spotlightRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
+    if (!spotlightRef.current) return;
+    
+    const rect = spotlightRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    setPosition({ x, y });
+    setOpacity(1);
+    setIsActive(true);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+    setIsActive(false);
+  };
+
+  useEffect(() => {
+    const currentRef = spotlightRef.current;
+    if (!currentRef) return;
+
+    currentRef.addEventListener("mousemove", handleMouseMove as any);
+    currentRef.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      currentRef.removeEventListener("mousemove", handleMouseMove as any);
+      currentRef.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
 
   return (
     <footer className="w-full bg-muted/50 border-t border-border">
@@ -125,6 +161,28 @@ export const Footer = () => {
               </svg>
             </a>
           </div>
+        </div>
+      </div>
+
+      {/* Spotlight effect at the end of footer */}
+      <div 
+        ref={spotlightRef}
+        className="relative overflow-hidden py-8 flex justify-center items-center"
+      >
+        <div
+          className="pointer-events-none absolute -inset-px z-30 opacity-0 transition-opacity duration-500"
+          style={{
+            opacity,
+            background: isActive
+              ? `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(120, 119, 198, 0.15), transparent 40%)`
+              : "",
+          }}
+        />
+        <div className="flex items-center space-x-3">
+          <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
+            <span className="text-white text-2xl font-syne font-bold">M</span>
+          </div>
+          <span className="font-syne font-bold text-xl">Mechx AI</span>
         </div>
       </div>
     </footer>

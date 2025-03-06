@@ -5,10 +5,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { Spotlight } from "@/components/ui/spotlight";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
 import PremadeProjects from "./pages/PremadeProjects";
+import ProjectDetail from "./pages/ProjectDetail";
+import PremadeProjectDetail from "./pages/PremadeProjectDetail";
 import Tutorials from "./pages/Tutorials";
 import TeamUp from "./pages/TeamUp";
 import Community from "./pages/Community";
@@ -44,26 +45,26 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <Spotlight className="w-full min-h-screen">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/premade-projects" element={<PremadeProjects />} />
-              <Route path="/tutorials" element={<Tutorials />} />
-              <Route path="/team-up" element={<TeamUp />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/faqs" element={<FAQs />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/docs" element={<Documentation />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/cookies" element={<Cookies />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </Spotlight>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/premade-projects" element={<PremadeProjects />} />
+            <Route path="/premade-projects/:id" element={<PremadeProjectDetail />} />
+            <Route path="/tutorials" element={<Tutorials />} />
+            <Route path="/team-up" element={<TeamUp />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/docs" element={<Documentation />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );

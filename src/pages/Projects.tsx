@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -162,7 +162,7 @@ const Projects = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedProjects.map((project) => (
                   <Card key={project.id} className="overflow-hidden hover-scale border-border/40 hover:border-primary/20">
-                    <div className="relative h-48 overflow-hidden">
+                    <Link to={`/projects/${project.id}`} className="block h-48 overflow-hidden">
                       <img
                         src={project.image_url}
                         alt={project.title}
@@ -176,9 +176,13 @@ const Projects = () => {
                           {project.difficulty}
                         </Badge>
                       </div>
-                    </div>
+                    </Link>
                     <CardHeader className="p-4 pb-2">
-                      <CardTitle className="text-xl">{project.title}</CardTitle>
+                      <CardTitle className="text-xl">
+                        <Link to={`/projects/${project.id}`} className="hover:text-primary transition-colors">
+                          {project.title}
+                        </Link>
+                      </CardTitle>
                       <CardDescription>{project.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="p-4 pt-0">
@@ -195,14 +199,12 @@ const Projects = () => {
                         <Code className="h-3.5 w-3.5" />
                         View Code
                       </Button>
-                      {project.project_url && (
-                        <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary" asChild>
-                          <a href={project.project_url} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-3.5 w-3.5" />
-                            Visit Project
-                          </a>
-                        </Button>
-                      )}
+                      <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary" asChild>
+                        <Link to={`/projects/${project.id}`}>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          View Details
+                        </Link>
+                      </Button>
                     </CardFooter>
                   </Card>
                 ))}
