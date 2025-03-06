@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,17 +38,13 @@ const ScrollToTop = () => {
 const App = () => {
   // Theme initialization
   useEffect(() => {
-    // Set light mode as default
     const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
-    if (savedTheme === "dark") {
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
-      // If no theme is set, save light theme as default
-      if (!savedTheme) {
-        localStorage.setItem("theme", "light");
-      }
     }
 
     // Set the document title to the new name
