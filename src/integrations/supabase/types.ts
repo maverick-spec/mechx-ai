@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      community: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          likes: number | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          views: number | null
+        }
+        Insert: {
+          author: string
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes?: number | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          views?: number | null
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes?: number | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          views?: number | null
+        }
+        Relationships: []
+      }
       premade_projects: {
         Row: {
           category: string
@@ -81,6 +123,90 @@ export type Database = {
           project_url?: string | null
           tags?: string[] | null
           title?: string
+        }
+        Relationships: []
+      }
+      team_up: {
+        Row: {
+          created_at: string
+          description: string
+          difficulty: string
+          duration: string | null
+          id: string
+          image_url: string | null
+          open_positions: number | null
+          skills_required: string[] | null
+          team_size: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          difficulty?: string
+          duration?: string | null
+          id?: string
+          image_url?: string | null
+          open_positions?: number | null
+          skills_required?: string[] | null
+          team_size?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          difficulty?: string
+          duration?: string | null
+          id?: string
+          image_url?: string | null
+          open_positions?: number | null
+          skills_required?: string[] | null
+          team_size?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tutorials: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          description: string
+          difficulty: string
+          id: string
+          image_url: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          description: string
+          difficulty?: string
+          id?: string
+          image_url?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          description?: string
+          difficulty?: string
+          id?: string
+          image_url?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
         }
         Relationships: []
       }
