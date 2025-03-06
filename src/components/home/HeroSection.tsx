@@ -76,7 +76,7 @@ export const HeroSection = () => {
             <Zap className="h-3.5 w-3.5 mr-1.5 text-mechatronix-600" />
             <span>Next-gen engineering solutions</span>
           </div>
-          <Spotlight /><Spotlight />
+          <Spotlight />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
             Future-Proof Your <Cover>Engineering</Cover> With{" "}
             <div className="inline-block relative">
