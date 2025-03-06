@@ -166,31 +166,6 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-
-      {/* Bottom section of footer with spotlight effect */}
-      <div 
-        ref={spotlightRef}
-        className="relative overflow-hidden py-8 flex justify-center items-center bg-black text-white border-t border-gray-800"
-      >
-        <div
-          className="pointer-events-none absolute -inset-px z-30 opacity-0 transition-opacity duration-500"
-          style={{
-            opacity,
-            background: isActive
-              ? `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(120, 119, 198, 0.15), transparent 40%)`
-              : "",
-          }}
-        />
-        <div className="text-center">
-          <div className="text-sm uppercase tracking-wider mb-1">Designed by</div>
-          <div className="flex items-center justify-center space-x-2">
-            <div className="h-8 w-8 rounded-md bg-gradient-to-br from-mechatronix-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white text-xl font-syne font-bold">M</span>
-            </div>
-            <span className="font-syne font-bold text-lg">Mechx AI</span>
-          </div>
-        </div>
-      </div>
     </footer>
   );
 };

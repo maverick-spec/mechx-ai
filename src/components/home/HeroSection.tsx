@@ -6,6 +6,7 @@ import { SearchIcon, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Safari } from "../magicui/safari";
 import { Cover } from "../ui/cover";
+import { Spotlight } from "../ui/spotlight-new";
 
 const textPhrases = [
  "AI",
@@ -71,10 +72,11 @@ export const HeroSection = () => {
       <div className="container px-4 md:px-6 relative">
         <div className="flex flex-col items-center text-center space-y-4 max-w-4xl mx-auto">
           <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-muted border border-muted-foreground/20 mb-2 animate-fade-in">
+            <Spotlight />
             <Zap className="h-3.5 w-3.5 mr-1.5 text-mechatronix-600" />
             <span>Next-gen engineering solutions</span>
           </div>
-          
+          <Spotlight /><Spotlight />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
             Future-Proof Your <Cover>Engineering</Cover> With{" "}
             <div className="inline-block relative">
