@@ -28,7 +28,16 @@ export const Navbar = () => {
   useEffect(() => {
     // Close mobile menu on route change
     closeMenu();
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
 
   const isActive = (path) => {
     if (path === "/") {
@@ -55,7 +64,7 @@ export const Navbar = () => {
       )}>
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between h-auto md:h-20">
           <div className="flex items-center justify-between w-full md:w-auto py-4 md:py-0">
-            <Link to="/" className="flex items-center gap-2" aria-label="Mechx AI">
+            <Link to="/" className="flex items-center gap-2" aria-label="Mechx AI" onClick={scrollToTop}>
               <span className="text-gradient font-bold text-lg md:text-xl font-syne">Mechx AI</span>
             </Link>
             
@@ -81,7 +90,7 @@ export const Navbar = () => {
                   isActive(item.path) && "bg-muted"
                 )}
               >
-                <Link to={item.path}>{item.text}</Link>
+                <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
               </Button>
             ))}
           </nav>
@@ -89,7 +98,7 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
             <Button variant="default" size="sm" asChild className="bg-mechatronix-600 hover:bg-mechatronix-700">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact" onClick={scrollToTop}>Contact Us</Link>
             </Button>
           </div>
         </div>

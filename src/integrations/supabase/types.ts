@@ -62,6 +62,7 @@ export type Database = {
           image_url: string
           price: number
           title: string
+          views: number | null
         }
         Insert: {
           category: string
@@ -73,6 +74,7 @@ export type Database = {
           image_url: string
           price: number
           title: string
+          views?: number | null
         }
         Update: {
           category?: string
@@ -84,6 +86,7 @@ export type Database = {
           image_url?: string
           price?: number
           title?: string
+          views?: number | null
         }
         Relationships: []
       }
@@ -99,6 +102,7 @@ export type Database = {
           project_url: string | null
           tags: string[] | null
           title: string
+          views: number | null
         }
         Insert: {
           category: string
@@ -111,6 +115,7 @@ export type Database = {
           project_url?: string | null
           tags?: string[] | null
           title: string
+          views?: number | null
         }
         Update: {
           category?: string
@@ -123,6 +128,7 @@ export type Database = {
           project_url?: string | null
           tags?: string[] | null
           title?: string
+          views?: number | null
         }
         Relationships: []
       }
