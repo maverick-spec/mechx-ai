@@ -132,6 +132,33 @@ export type Database = {
         }
         Relationships: []
       }
+      search_queries: {
+        Row: {
+          feedback: string | null
+          id: string
+          query: string
+          results: Json | null
+          timestamp: string
+          user_id: string | null
+        }
+        Insert: {
+          feedback?: string | null
+          id?: string
+          query: string
+          results?: Json | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Update: {
+          feedback?: string | null
+          id?: string
+          query?: string
+          results?: Json | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       team_up: {
         Row: {
           created_at: string

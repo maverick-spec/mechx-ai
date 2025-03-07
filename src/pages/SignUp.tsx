@@ -1,109 +1,91 @@
 
-import { useState } from "react";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { SignUp as ClerkSignUp, useAuth } from "@clerk/clerk-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignUp as ClerkSignUp } from "@clerk/clerk-react";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const SignUp = () => {
+  const { isSignedIn } = useAuth();
   const navigate = useNavigate();
-  const [isSigningUp, setIsSigningUp] = useState(true);
-  
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/");
+    }
+  }, [isSignedIn, navigate]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pt-20">
-        <div className="container px-4 py-12 max-w-5xl mx-auto">
+      <main className="flex-1 pt-16">
+        <div className="container px-4 py-10 md:py-16 max-w-6xl">
           <Button 
             variant="ghost" 
-            onClick={() => navigate("/")} 
-            className="mb-8"
+            asChild 
+            className="mb-8 text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
+            <Link to="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
           </Button>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl font-bold mb-4">
-                {isSigningUp ? "Join Mechx AI" : "Welcome Back!"}
-              </h1>
-              <p className="text-muted-foreground mb-6 text-lg">
-                {isSigningUp 
-                  ? "Create an account to discover projects, connect with other engineers, and build amazing things together."
-                  : "Sign in to access personalized project recommendations, collaborate with the community, and track your progress."
-                }
-              </p>
+
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
+            {/* Left column - Sign Up information */}
+            <div className="flex flex-col justify-center max-w-md">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tight">
+                  Join MechX AI Community
+                </h1>
+                <p className="text-muted-foreground">
+                  Create an account to access exclusive features and collaborate with other engineers
+                </p>
+              </div>
               
-              <Card className="bg-muted/50 border-border/50">
-                <CardHeader>
-                  <CardTitle>Why join our community?</CardTitle>
-                  <CardDescription>
-                    Unlock the full potential of Mechx AI
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <div className="bg-mechatronix-100 dark:bg-mechatronix-900/30 text-mechatronix-600 h-6 w-6 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      1
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Personalized Recommendations</h3>
-                      <p className="text-sm text-muted-foreground">Get project suggestions tailored to your skills and interests</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <div className="bg-mechatronix-100 dark:bg-mechatronix-900/30 text-mechatronix-600 h-6 w-6 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      2
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Collaborate on Projects</h3>
-                      <p className="text-sm text-muted-foreground">Team up with other engineers on exciting challenges</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <div className="bg-mechatronix-100 dark:bg-mechatronix-900/30 text-mechatronix-600 h-6 w-6 rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      3
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Track Your Progress</h3>
-                      <p className="text-sm text-muted-foreground">Save your favorite projects and monitor your learning journey</p>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-center">
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setIsSigningUp(!isSigningUp)}
-                  >
-                    {isSigningUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
-                  </Button>
-                </CardFooter>
-              </Card>
+              <div className="mt-8 space-y-6">
+                <div className="space-y-2 rounded-lg border p-4 bg-muted/30">
+                  <h3 className="font-semibold">Access premium projects</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Get full documentation, code, and schematics for all our mechatronics projects
+                  </p>
+                </div>
+                
+                <div className="space-y-2 rounded-lg border p-4 bg-muted/30">
+                  <h3 className="font-semibold">AI project recommendations</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Receive personalized project suggestions based on your skills and interests
+                  </p>
+                </div>
+                
+                <div className="space-y-2 rounded-lg border p-4 bg-muted/30">
+                  <h3 className="font-semibold">Connect with experts</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Team up with experienced engineers and expand your professional network
+                  </p>
+                </div>
+              </div>
             </div>
-            
-            <div className="bg-card rounded-lg border p-4 flex items-center justify-center min-h-[500px]">
-              <ClerkSignUp 
-                routing="path" 
-                path="/sign-up" 
-                signInUrl="/sign-in"
-                appearance={{
-                  elements: {
-                    rootBox: "w-full flex justify-center",
-                    card: "w-full border-0 shadow-none",
-                    headerTitle: "text-2xl",
-                    headerSubtitle: "text-muted-foreground",
-                    socialButtonsBlockButton: "border rounded-md",
-                    formButtonPrimary: "bg-mechatronix-600 hover:bg-mechatronix-700",
-                    footerActionLink: "text-mechatronix-600 hover:text-mechatronix-700"
-                  }
-                }}
-              />
+
+            {/* Right column - Clerk Sign Up UI */}
+            <div className="bg-card rounded-lg border p-6 shadow-sm">
+              <div className="mx-auto w-full max-w-sm">
+                <ClerkSignUp 
+                  appearance={{
+                    elements: {
+                      formButtonPrimary: "bg-primary hover:bg-primary/90 text-white",
+                      footerAction: "text-primary hover:text-primary/90",
+                      card: "shadow-none w-full",
+                    }
+                  }}
+                  routing="path"
+                  path="/sign-up"
+                  redirectUrl="/"
+                  signInUrl="/sign-in"
+                />
+              </div>
             </div>
           </div>
         </div>

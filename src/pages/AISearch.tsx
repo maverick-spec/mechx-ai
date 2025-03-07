@@ -52,13 +52,14 @@ const AISearch = () => {
   // Save search query to Supabase
   const saveSearchQuery = async (queryText: string) => {
     try {
-      const { error } = await supabase
-        .from('search_queries')
-        .insert([
-          { query: queryText, timestamp: new Date().toISOString() }
-        ]);
+      // Using raw SQL query with RPC since search_queries is not in the type definition
+      const { error } = await supabase.rpc('save_search_query', { 
+        query_text: queryText 
+      });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error saving search query:", error);
+      }
     } catch (error) {
       console.error("Error saving search query:", error);
     }
@@ -82,26 +83,42 @@ const AISearch = () => {
     await saveSearchQuery(userQuery);
     
     try {
-      // Here you would make a real API call to OpenAI
-      // This is a mock response for now
-      setTimeout(() => {
-        const aiResponse: Message = {
-          role: "assistant",
-          content: generateMockResponse(userQuery),
-          timestamp: new Date()
-        };
-        
-        setMessages((prevMessages) => [...prevMessages, aiResponse]);
-        setLoading(false);
-      }, 1500);
+      // Call the Supabase Edge Function
+      const { data, error } = await supabase.functions.invoke('ai-search', {
+        body: { query: userQuery }
+      });
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      const aiResponse: Message = {
+        role: "assistant",
+        content: data.text,
+        timestamp: new Date()
+      };
+      
+      setMessages((prevMessages) => [...prevMessages, aiResponse]);
+      setLoading(false);
       
       // Focus the input after response is received
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 1600);
+      }, 100);
       
     } catch (error) {
+      console.error("Error getting AI response:", error);
       setLoading(false);
+      
+      // Fallback response in case of error
+      const fallbackResponse: Message = {
+        role: "assistant",
+        content: "I'm sorry, I couldn't process your request at the moment. Please try again later.",
+        timestamp: new Date()
+      };
+      
+      setMessages((prevMessages) => [...prevMessages, fallbackResponse]);
+      
       toast({
         title: "Error",
         description: "Failed to get a response. Please try again.",
@@ -119,71 +136,6 @@ const AISearch = () => {
 
   const goBack = () => {
     navigate("/");
-  };
-
-  // Mock response generator - will be replaced with actual OpenAI integration
-  const generateMockResponse = (query: string): string => {
-    const responses = [
-      `Based on your interest in "${query}", here are some recommended projects:
-      
-1. **Arduino-based Smart Home System**
-   - Difficulty: Intermediate
-   - Components: Arduino Mega, Sensors, Relay modules
-   - Features: Remote control, automated lighting, temperature monitoring
-
-2. **Autonomous Maze-Solving Robot**
-   - Difficulty: Advanced
-   - Components: Raspberry Pi, Motors, Ultrasonic sensors
-   - Features: Path finding algorithms, obstacle detection
-
-3. **Gesture-Controlled Drone**
-   - Difficulty: Advanced
-   - Components: ESP32, MPU6050, Brushless motors
-   - Features: Motion detection, stabilization algorithms
-
-Would you like more details about any of these projects?`,
-      
-      `For your query "${query}", I recommend exploring these mechatronics projects:
-      
-1. **Weather Monitoring Station**
-   - Difficulty: Beginner
-   - Components: Arduino, DHT22 sensor, LCD display
-   - Features: Temperature and humidity tracking, data logging
-
-2. **Voice-Controlled Robot Arm**
-   - Difficulty: Intermediate
-   - Components: Arduino, Servo motors, Microphone module
-   - Features: Speech recognition, precise movement control
-
-3. **Automated Plant Watering System**
-   - Difficulty: Beginner
-   - Components: Arduino Nano, Soil moisture sensors, Water pump
-   - Features: Scheduled watering, moisture level monitoring
-
-Would you like me to suggest learning resources for any of these projects?`,
-      
-      `Here are some project recommendations based on "${query}":
-      
-1. **Solar-Powered Battery Charger**
-   - Difficulty: Intermediate
-   - Components: Solar panels, Charge controller, Battery
-   - Features: Energy harvesting, voltage regulation
-
-2. **Line-Following Robot with PID Control**
-   - Difficulty: Intermediate
-   - Components: Arduino, IR sensors, DC motors
-   - Features: Self-correction algorithms, speed optimization
-
-3. **LED Cube with Audio Visualization**
-   - Difficulty: Advanced
-   - Components: Arduino, LEDs, Microphone module
-   - Features: 3D light patterns, sound responsiveness
-
-I can provide detailed instructions for implementing any of these projects. Just let me know which interests you!`
-    ];
-    
-    // Return a random response from the array
-    return responses[Math.floor(Math.random() * responses.length)];
   };
 
   return (
