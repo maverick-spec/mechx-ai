@@ -20,6 +20,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Pricing from "./pages/Pricing";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,14 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <header>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </header>
         <BrowserRouter>
           <ScrollToTop />
           <Routes>

@@ -11,7 +11,7 @@ import { Spotlight } from "../ui/spotlight-new";
 const textPhrases = [
  "AI",
 "Robotics",
-"Automation",
+"Automat",
 "IoT"
 ];
 
@@ -121,11 +121,11 @@ export const HeroSection = () => {
         <div className="mt-12 md:mt-16 relative max-w-5xl mx-auto animate-fade-in" style={{ animationDelay: "0.6s" }}>
           </div>
               <div className="relative">
-      <Safari
+            <Safari
         url="mechx-ai.xyz"
         className="size-full"
-        imageSrc="/lovable-uploads/ee6bfad7-d15b-410b-a32b-c28526235f62.png"
-      />
+        imageSrc="/public/images/herosection.png"
+            />
     </div>
         </div>
     </section>
