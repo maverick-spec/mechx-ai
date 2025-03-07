@@ -81,46 +81,48 @@ export const Navbar = () => {
           
           <nav className="hidden md:flex items-center justify-center space-x-1 flex-1">
             {navItems.map((item) => (
-              <SignedIn key={item.text + "-auth"}>
-                {item.requiresAuth ? (
-                  <Button
-                    variant="ghost"
-                    asChild
-                    className={cn(
-                      "text-sm transition-colors",
-                      isActive(item.path) && "bg-muted"
-                    )}
-                  >
-                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    asChild
-                    className={cn(
-                      "text-sm transition-colors",
-                      isActive(item.path) && "bg-muted"
-                    )}
-                  >
-                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
-                  </Button>
-                )}
-              </SignedIn>
-              
-              <SignedOut key={item.text}>
-                {!item.requiresAuth && (
-                  <Button
-                    variant="ghost"
-                    asChild
-                    className={cn(
-                      "text-sm transition-colors",
-                      isActive(item.path) && "bg-muted"
-                    )}
-                  >
-                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
-                  </Button>
-                )}
-              </SignedOut>
+              <React.Fragment key={item.text}>
+                <SignedIn>
+                  {item.requiresAuth ? (
+                    <Button
+                      variant="ghost"
+                      asChild
+                      className={cn(
+                        "text-sm transition-colors",
+                        isActive(item.path) && "bg-muted"
+                      )}
+                    >
+                      <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      asChild
+                      className={cn(
+                        "text-sm transition-colors",
+                        isActive(item.path) && "bg-muted"
+                      )}
+                    >
+                      <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                    </Button>
+                  )}
+                </SignedIn>
+                
+                <SignedOut>
+                  {!item.requiresAuth && (
+                    <Button
+                      variant="ghost"
+                      asChild
+                      className={cn(
+                        "text-sm transition-colors",
+                        isActive(item.path) && "bg-muted"
+                      )}
+                    >
+                      <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                    </Button>
+                  )}
+                </SignedOut>
+              </React.Fragment>
             ))}
           </nav>
 
