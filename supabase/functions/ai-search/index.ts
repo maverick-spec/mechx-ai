@@ -29,6 +29,7 @@ serve(async (req) => {
 
     // Call OpenAI API with the query
     try {
+      console.log("Calling OpenAI API with query:", query);
       const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -53,12 +54,15 @@ serve(async (req) => {
       });
 
       const data = await openAIResponse.json();
+      console.log("OpenAI API response status:", openAIResponse.status);
 
       if (!openAIResponse.ok) {
+        console.error("OpenAI API error:", data.error);
         throw new Error(data.error?.message || "Error calling OpenAI API");
       }
 
       const responseText = data.choices[0]?.message?.content || "";
+      console.log("Successfully got response from OpenAI");
 
       return new Response(
         JSON.stringify({ text: responseText }),

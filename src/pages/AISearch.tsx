@@ -52,7 +52,7 @@ const AISearch = () => {
   // Save search query to Supabase
   const saveSearchQuery = async (queryText: string) => {
     try {
-      // Using raw SQL query with RPC since search_queries is not in the type definition
+      // Using RPC to call the function we created
       const { error } = await supabase.rpc('save_search_query', { 
         query_text: queryText 
       });

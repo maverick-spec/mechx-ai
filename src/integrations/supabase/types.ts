@@ -248,7 +248,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      save_search_query: {
+        Args: {
+          query_text: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       difficulty_level: "beginner" | "intermediate" | "advanced"

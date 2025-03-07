@@ -24,7 +24,6 @@ export const AISearch = () => {
         <SectionHeading
           title="AI-Powered Project Search"
           subtitle="Describe your interests or skills and get personalized mechatronics project recommendations"
-          center
         />
 
         <div className="mt-10 max-w-2xl mx-auto">
