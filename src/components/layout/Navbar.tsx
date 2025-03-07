@@ -1,10 +1,11 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useUser, UserButton } from "@clerk/clerk-react";
-import { Menu } from "lucide-react";
+import { Menu, Sun, Moon } from "lucide-react";
 import { useMobileMenu } from "@/hooks/use-mobile-menu";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 const navItems = [
   {
@@ -38,6 +39,49 @@ const navItems = [
     active: false,
   },
 ];
+
+// Create an inline ThemeToggle component
+function ThemeToggle() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setIsDarkMode(isDark);
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    if (isDarkMode) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+  };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark");
+      setIsDarkMode(true);
+    }
+  }, []);
+
+  return (
+    <Button 
+      variant="ghost" 
+      size="icon" 
+      onClick={toggleTheme}
+      className="transition-all duration-200 hover:bg-muted"
+    >
+      {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
+}
 
 export function Navbar() {
   const { user, isSignedIn } = useUser();
