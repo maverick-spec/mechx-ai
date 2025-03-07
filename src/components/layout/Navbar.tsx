@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { Menu, X, Layers, Lightbulb, Users, MessageCircle, HelpCircle } from "lucide-react";
+import { Menu, X, Layers, Users, MessageCircle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileMenu } from "@/hooks/use-mobile-menu";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { isOpen, toggleMenu, navigateAndClose, closeMenu } = useMobileMenu();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -47,13 +49,11 @@ export const Navbar = () => {
   };
 
   const navItems = [
-    { text: "Projects", path: "/projects", icon: <Layers className="h-4 w-4" /> },
-    { text: "Pre-made Projects", path: "/premade-projects", icon: <Layers className="h-4 w-4" /> },
-    { text: "Tutorials", path: "/tutorials", icon: <Lightbulb className="h-4 w-4" /> },
-    { text: "Team Up", path: "/team-up", icon: <Users className="h-4 w-4" /> },
-    { text: "Community", path: "/community", icon: <MessageCircle className="h-4 w-4" /> },
-    { text: "Pricing", path: "/pricing", icon: <HelpCircle className="h-4 w-4" /> },
-    { text: "FAQs", path: "/faqs", icon: <HelpCircle className="h-4 w-4" /> }
+    { text: "Projects", path: "/projects", icon: <Layers className="h-4 w-4" />, requiresAuth: true },
+    { text: "Team Up", path: "/team-up", icon: <Users className="h-4 w-4" />, requiresAuth: true },
+    { text: "Community", path: "/community", icon: <MessageCircle className="h-4 w-4" />, requiresAuth: true },
+    { text: "Pricing", path: "/pricing", icon: <HelpCircle className="h-4 w-4" />, requiresAuth: false },
+    { text: "FAQs", path: "/faqs", icon: <HelpCircle className="h-4 w-4" />, requiresAuth: false }
   ];
 
   return (
@@ -81,22 +81,62 @@ export const Navbar = () => {
           
           <nav className="hidden md:flex items-center justify-center space-x-1 flex-1">
             {navItems.map((item) => (
-              <Button
-                key={item.text}
-                variant="ghost"
-                asChild
-                className={cn(
-                  "text-sm transition-colors",
-                  isActive(item.path) && "bg-muted"
+              <SignedIn key={item.text + "-auth"}>
+                {item.requiresAuth ? (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={cn(
+                      "text-sm transition-colors",
+                      isActive(item.path) && "bg-muted"
+                    )}
+                  >
+                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={cn(
+                      "text-sm transition-colors",
+                      isActive(item.path) && "bg-muted"
+                    )}
+                  >
+                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                  </Button>
                 )}
-              >
-                <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
-              </Button>
+              </SignedIn>
+              
+              <SignedOut key={item.text}>
+                {!item.requiresAuth && (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className={cn(
+                      "text-sm transition-colors",
+                      isActive(item.path) && "bg-muted"
+                    )}
+                  >
+                    <Link to={item.path} onClick={scrollToTop}>{item.text}</Link>
+                  </Button>
+                )}
+              </SignedOut>
             ))}
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
+            
+            <SignedOut>
+              <Button variant="outline" onClick={() => navigate("/sign-in")}>
+                Sign In
+              </Button>
+            </SignedOut>
+            
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            
             <Button variant="default" size="sm" asChild className="bg-mechatronix-600 hover:bg-mechatronix-700">
               <Link to="/contact" onClick={scrollToTop}>Contact Us</Link>
             </Button>
@@ -115,26 +155,58 @@ export const Navbar = () => {
       >
         <div className="flex flex-col h-full pt-20 pb-6 px-6 overflow-auto">
           <nav className="flex flex-col space-y-1 mb-6">
-            {navItems.map((item) => (
-              <Button
-                key={item.text}
-                variant="ghost"
-                className={cn(
-                  "justify-start text-lg h-12",
-                  isActive(item.path) && "bg-muted"
-                )}
-                onClick={() => navigateAndClose(item.path)}
-              >
-                {item.icon}
-                <span className="ml-2">{item.text}</span>
-              </Button>
-            ))}
+            <SignedIn>
+              {navItems.map((item) => (
+                <Button
+                  key={item.text}
+                  variant="ghost"
+                  className={cn(
+                    "justify-start text-lg h-12",
+                    isActive(item.path) && "bg-muted"
+                  )}
+                  onClick={() => navigateAndClose(item.path)}
+                >
+                  {item.icon}
+                  <span className="ml-2">{item.text}</span>
+                </Button>
+              ))}
+            </SignedIn>
+            
+            <SignedOut>
+              {navItems.filter(item => !item.requiresAuth).map((item) => (
+                <Button
+                  key={item.text}
+                  variant="ghost"
+                  className={cn(
+                    "justify-start text-lg h-12",
+                    isActive(item.path) && "bg-muted"
+                  )}
+                  onClick={() => navigateAndClose(item.path)}
+                >
+                  {item.icon}
+                  <span className="ml-2">{item.text}</span>
+                </Button>
+              ))}
+            </SignedOut>
           </nav>
           
           <div className="flex flex-col space-y-4 mt-auto">
+            <SignedOut>
+              <Button onClick={() => navigateAndClose("/sign-in")}>
+                Sign In
+              </Button>
+            </SignedOut>
+            
+            <SignedIn>
+              <div className="flex justify-center mb-4">
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            </SignedIn>
+            
             <Button onClick={() => navigateAndClose("/contact")} className="bg-mechatronix-600 hover:bg-mechatronix-700">
               Contact Us
             </Button>
+            
             <div className="flex items-center justify-between">
               <Link
                 to="/docs"

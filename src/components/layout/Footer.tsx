@@ -1,24 +1,24 @@
 
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { SignedIn } from "@clerk/clerk-react";
 
 const footerLinks = {
   quickLinks: [
-    { name: "Home", href: "/" },
-    { name: "Projects", href: "/projects" },
-    { name: "Tutorials", href: "/tutorials" },
-    { name: "Team Up", href: "/team-up" },
-    { name: "Community", href: "/community" },
+    { name: "Home", href: "/", requiresAuth: false },
+    { name: "Projects", href: "/projects", requiresAuth: true },
+    { name: "Team Up", href: "/team-up", requiresAuth: true },
+    { name: "Community", href: "/community", requiresAuth: true },
   ],
   support: [
-    { name: "FAQs", href: "/faqs" },
-    { name: "Contact Us", href: "/contact" },
-    { name: "Documentation", href: "/docs" },
+    { name: "FAQs", href: "/faqs", requiresAuth: false },
+    { name: "Contact Us", href: "/contact", requiresAuth: false },
+    { name: "Documentation", href: "/docs", requiresAuth: false },
   ],
   legal: [
-    { name: "Terms of Service", href: "/terms" },
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Cookie Policy", href: "/cookies" },
+    { name: "Terms of Service", href: "/terms", requiresAuth: false },
+    { name: "Privacy Policy", href: "/privacy", requiresAuth: false },
+    { name: "Cookie Policy", href: "/cookies", requiresAuth: false },
   ],
 };
 
@@ -90,15 +90,29 @@ export const Footer = () => {
             <h3 className="font-syne font-bold text-sm mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {footerLinks.quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
-                    onClick={scrollToTop}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
+                link.requiresAuth ? (
+                  <SignedIn key={link.name}>
+                    <li>
+                      <Link
+                        to={link.href}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
+                        onClick={scrollToTop}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  </SignedIn>
+                ) : (
+                  <li key={link.name}>
+                    <Link
+                      to={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors font-jakarta"
+                      onClick={scrollToTop}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                )
               ))}
             </ul>
           </div>
