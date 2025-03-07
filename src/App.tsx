@@ -1,14 +1,15 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
+import PremadeProjects from "./pages/PremadeProjects";
 import ProjectDetail from "./pages/ProjectDetail";
+import PremadeProjectDetail from "./pages/PremadeProjectDetail";
+import Tutorials from "./pages/Tutorials";
 import TeamUp from "./pages/TeamUp";
 import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
@@ -19,7 +20,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Pricing from "./pages/Pricing";
-import SignIn from "./pages/SignIn";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const queryClient = new QueryClient();
 
@@ -32,20 +33,6 @@ const ScrollToTop = () => {
   }, [pathname]);
 
   return null;
-};
-
-// Protected route component to handle authentication
-const ProtectedRoute = ({ children }) => {
-  return (
-    <>
-      <SignedIn>
-        {children}
-      </SignedIn>
-      <SignedOut>
-        <Navigate to="/sign-in" replace />
-      </SignedOut>
-    </>
-  );
 };
 
 const App = () => {
@@ -69,30 +56,25 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <header>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </header>
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/projects" element={
-              <ProtectedRoute>
-                <Projects />
-              </ProtectedRoute>
-            } />
-            <Route path="/projects/:id" element={
-              <ProtectedRoute>
-                <ProjectDetail />
-              </ProtectedRoute>
-            } />
-            <Route path="/team-up" element={
-              <ProtectedRoute>
-                <TeamUp />
-              </ProtectedRoute>
-            } />
-            <Route path="/community" element={
-              <ProtectedRoute>
-                <Community />
-              </ProtectedRoute>
-            } />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/premade-projects" element={<PremadeProjects />} />
+            <Route path="/premade-projects/:id" element={<PremadeProjectDetail />} />
+            <Route path="/tutorials" element={<Tutorials />} />
+            <Route path="/team-up" element={<TeamUp />} />
+            <Route path="/community" element={<Community />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/contact" element={<Contact />} />
@@ -100,7 +82,6 @@ const App = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/cookies" element={<Cookies />} />
-            <Route path="/sign-in" element={<SignIn />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
