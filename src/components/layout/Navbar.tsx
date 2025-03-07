@@ -1,11 +1,12 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { Menu, X, Layers, Lightbulb, Users, MessageCircle, HelpCircle } from "lucide-react";
+import { Menu, X, Layers, Users, MessageCircle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileMenu } from "@/hooks/use-mobile-menu";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -30,7 +31,7 @@ export const Navbar = () => {
     closeMenu();
     // Scroll to top on route change
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [location.pathname, closeMenu]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -46,10 +47,9 @@ export const Navbar = () => {
     return location.pathname.startsWith(path);
   };
 
+  // Removed Pre-Made Projects and Tutorials as requested
   const navItems = [
     { text: "Projects", path: "/projects", icon: <Layers className="h-4 w-4" /> },
-    { text: "Pre-made Projects", path: "/premade-projects", icon: <Layers className="h-4 w-4" /> },
-    { text: "Tutorials", path: "/tutorials", icon: <Lightbulb className="h-4 w-4" /> },
     { text: "Team Up", path: "/team-up", icon: <Users className="h-4 w-4" /> },
     { text: "Community", path: "/community", icon: <MessageCircle className="h-4 w-4" /> },
     { text: "Pricing", path: "/pricing", icon: <HelpCircle className="h-4 w-4" /> },
@@ -97,6 +97,17 @@ export const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
+            
+            <SignedOut>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/sign-in">Sign In</Link>
+              </Button>
+            </SignedOut>
+            
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            
             <Button variant="default" size="sm" asChild className="bg-mechatronix-600 hover:bg-mechatronix-700">
               <Link to="/contact" onClick={scrollToTop}>Contact Us</Link>
             </Button>
@@ -132,6 +143,19 @@ export const Navbar = () => {
           </nav>
           
           <div className="flex flex-col space-y-4 mt-auto">
+            <SignedOut>
+              <Button 
+                variant="outline" 
+                onClick={() => navigateAndClose("/sign-in")}
+              >
+                Sign In
+              </Button>
+            </SignedOut>
+            
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            
             <Button onClick={() => navigateAndClose("/contact")} className="bg-mechatronix-600 hover:bg-mechatronix-700">
               Contact Us
             </Button>

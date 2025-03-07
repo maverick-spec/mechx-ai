@@ -6,7 +6,6 @@ const footerLinks = {
   quickLinks: [
     { name: "Home", href: "/" },
     { name: "Projects", href: "/projects" },
-    { name: "Tutorials", href: "/tutorials" },
     { name: "Team Up", href: "/team-up" },
     { name: "Community", href: "/community" },
   ],

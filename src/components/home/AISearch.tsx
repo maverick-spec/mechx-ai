@@ -1,12 +1,15 @@
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Sparkles, BookOpen, Bot, RotateCw, Cpu } from "lucide-react";
+import { Search, Sparkles, Bot, RotateCw, Cpu } from "lucide-react";
 
 export const AISearch = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -17,10 +20,11 @@ export const AISearch = () => {
     
     setIsSearching(true);
     
-    // Simulate search delay
+    // Navigate to the AI search page with the query parameter
     setTimeout(() => {
       setIsSearching(false);
-    }, 1500);
+      navigate(`/ai-search?query=${encodeURIComponent(searchQuery)}`);
+    }, 800);
   };
 
   return (
@@ -115,7 +119,7 @@ export const AISearch = () => {
 
               <div className="mt-6 flex justify-between items-center pt-4 border-t border-border/40">
                 <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-muted-foreground" />
+                  <Bot className="h-4 w-4 text-muted-foreground" />
                   <span className="text-xs text-muted-foreground">
                     Search across 1,000+ projects and tutorials
                   </span>
