@@ -14,6 +14,8 @@ export const AISearch = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/ai-search?query=${encodeURIComponent(searchQuery.trim())}`);
+      // Reset scroll position when navigating to the search page
+      window.scrollTo(0, 0);
     }
   };
 

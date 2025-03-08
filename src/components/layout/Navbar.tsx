@@ -123,23 +123,25 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/sign-in">
+                <Link to="/sign-in" className="hidden sm:inline-block">
                   <Button variant="ghost" size="sm">Sign In</Button>
                 </Link>
-                <Link to="/sign-up">
+                <Link to="/sign-up" className="hidden sm:inline-block">
                   <Button size="sm">Sign Up</Button>
                 </Link>
+                <div className="sm:hidden">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="menu-trigger"
+                    onClick={mobileMenu.toggleMenu}
+                  >
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Toggle Menu</span>
+                  </Button>
+                </div>
               </>
             )}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden menu-trigger"
-              onClick={mobileMenu.toggleMenu}
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
           </nav>
         </div>
       </div>
@@ -159,6 +161,14 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+            <div className="grid grid-cols-2 gap-2 pt-4 border-t">
+              <Link to="/sign-in" onClick={mobileMenu.closeMenu}>
+                <Button variant="outline" className="w-full">Sign In</Button>
+              </Link>
+              <Link to="/sign-up" onClick={mobileMenu.closeMenu}>
+                <Button className="w-full">Sign Up</Button>
+              </Link>
+            </div>
           </div>
         </div>
       )}

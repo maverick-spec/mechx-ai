@@ -17,9 +17,9 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 py-16">
-        <div className="container px-4 py-10 md:py-16 max-w-6xl">
-          <div className="text-center mb-10">
+      <main className="flex-1 py-8">
+        <div className="container px-4 py-8 md:py-12 max-w-6xl">
+          <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center justify-center">
               <h1 className="font-syne font-bold text-3xl">
                 <span className="text-mechatronix-600 mr-1">M</span>echX AI
@@ -30,7 +30,7 @@ const SignIn = () => {
           <Button 
             variant="ghost" 
             asChild 
-            className="mb-8 text-muted-foreground hover:text-foreground"
+            className="mb-6 text-muted-foreground hover:text-foreground"
           >
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -50,7 +50,7 @@ const SignIn = () => {
                 </p>
               </div>
               
-              <div className="mt-8 space-y-6">
+              <div className="mt-6 space-y-5">
                 <div className="space-y-2 rounded-lg border p-4 bg-muted/30">
                   <h3 className="font-semibold">Explore projects and collaborate</h3>
                   <p className="text-sm text-muted-foreground">
@@ -87,8 +87,8 @@ const SignIn = () => {
                   }}
                   routing="path"
                   path="/sign-in"
-                  redirectUrl="/"
                   signUpUrl="/sign-up"
+                  fallbackRedirectUrl="/"
                 />
               </div>
             </div>

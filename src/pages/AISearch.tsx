@@ -1,6 +1,5 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +38,9 @@ const AISearch = () => {
       setQuery(queryParam);
       handleSubmit(queryParam);
     }
+    
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
   }, [location.search]);
 
   const scrollToBottom = () => {
@@ -140,9 +142,17 @@ const AISearch = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1 pt-20">
+      {/* Footer only, no Navbar */}
+      <main className="flex-1">
         <div className="container px-4 max-w-5xl mx-auto py-8">
+          <div className="text-center mb-10 mt-8">
+            <div className="inline-flex items-center justify-center">
+              <h1 className="font-syne font-bold text-3xl">
+                <span className="text-mechatronix-600 mr-1">M</span>echX AI
+              </h1>
+            </div>
+          </div>
+          
           <Button 
             variant="ghost" 
             onClick={goBack} 
@@ -215,11 +225,11 @@ const AISearch = () => {
                       className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                     >
                       <div 
-                        className={`flex gap-3 max-w-[80%] ${
+                        className={`flex items-start gap-3 max-w-[80%] ${
                           message.role === "user" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <Avatar className={`h-8 w-8 ${
+                        <Avatar className={`h-8 w-8 mt-1 ${
                           message.role === "assistant" 
                             ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
                             : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
@@ -247,8 +257,8 @@ const AISearch = () => {
                 
                 {loading && (
                   <div className="flex justify-start">
-                    <div className="flex gap-3 max-w-[80%]">
-                      <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                    <div className="flex items-start gap-3 max-w-[80%]">
+                      <Avatar className="h-8 w-8 mt-1 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
                         <Bot className="h-4 w-4 text-white" />
                       </Avatar>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
@@ -273,7 +283,7 @@ const AISearch = () => {
                 >
                   <Textarea
                     ref={inputRef}
-                    placeholder="Describe the project you're looking for..."
+                    placeholder="Ask anything about mechatronics projects..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
