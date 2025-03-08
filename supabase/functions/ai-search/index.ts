@@ -45,7 +45,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "You are a friendly and helpful AI assistant. Answer any questions the user asks in a conversational way. Be helpful, friendly, and engaging."
+              content: "You are a friendly and helpful AI assistant. Respond conversationally to any question or statement. Be helpful, personable and engaging. If someone says hello or hi, greet them back warmly."
             },
             {
               role: "user",
@@ -57,14 +57,15 @@ serve(async (req) => {
         }),
       });
 
-      const data = await openAIResponse.json();
-      console.log("OpenAI API response status:", openAIResponse.status);
-
       if (!openAIResponse.ok) {
-        console.error("OpenAI API error:", data.error);
-        throw new Error(data.error?.message || "Error calling OpenAI API");
+        const errorData = await openAIResponse.json();
+        console.error("OpenAI API error:", errorData);
+        throw new Error(errorData.error?.message || "Error calling OpenAI API");
       }
 
+      const data = await openAIResponse.json();
+      console.log("OpenAI API response status:", openAIResponse.status);
+      
       const responseText = data.choices[0]?.message?.content || "";
       console.log("Successfully got response from OpenAI");
 

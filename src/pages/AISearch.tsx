@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
@@ -187,10 +186,10 @@ const AISearch = () => {
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Tell me about yourself")}
+                        onClick={() => handleSubmit("Hello, how are you today?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Tell me about yourself</span>
+                        <span className="truncate">Hello, how are you today?</span>
                       </Button>
                       <Button 
                         variant="outline" 
@@ -211,10 +210,10 @@ const AISearch = () => {
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("How does machine learning work?")}
+                        onClick={() => handleSubmit("Explain artificial intelligence")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">How does machine learning work?</span>
+                        <span className="truncate">Explain artificial intelligence</span>
                       </Button>
                     </div>
                   </div>
@@ -226,22 +225,22 @@ const AISearch = () => {
                     >
                       <div 
                         className={`flex items-start gap-3 max-w-[80%] ${
-                          message.role === "user" ? "flex-row-reverse" : "flex-row"
+                          message.role === "user" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <div className="flex-shrink-0 mt-1">
-                          <Avatar className={`h-8 w-8 ${
-                            message.role === "assistant" 
-                              ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
-                              : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
-                          }`}>
+                        <Avatar className={`h-8 w-8 flex-shrink-0 ${
+                          message.role === "assistant" 
+                            ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
+                            : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
+                        }`}>
+                          <div className="flex items-center justify-center w-full h-full">
                             {message.role === "assistant" ? (
                               <Bot className="h-4 w-4 text-white" />
                             ) : (
                               <User className="h-4 w-4 text-white" />
                             )}
-                          </Avatar>
-                        </div>
+                          </div>
+                        </Avatar>
                         
                         <div 
                           className={`rounded-lg px-4 py-3 whitespace-pre-wrap ${
@@ -260,11 +259,11 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <div className="flex-shrink-0 mt-1">
-                        <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                      <Avatar className="h-8 w-8 flex-shrink-0 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                        <div className="flex items-center justify-center w-full h-full">
                           <Bot className="h-4 w-4 text-white" />
-                        </Avatar>
-                      </div>
+                        </div>
+                      </Avatar>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />
                         Thinking...

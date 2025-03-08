@@ -45,16 +45,16 @@ export const AISearch = () => {
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm text-muted-foreground">
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
-              <span className="font-medium mb-1">Knowledgeable</span>
-              <p>Ask about any topic or get help with any question</p>
+              <span className="font-medium mb-1">Conversational</span>
+              <p>Chat naturally with an AI that understands context</p>
             </div>
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
               <span className="font-medium mb-1">Helpful</span>
-              <p>Get assistance on anything you're curious about</p>
+              <p>Get assistance on any topic you're curious about</p>
             </div>
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
-              <span className="font-medium mb-1">Conversational</span>
-              <p>Enjoy natural conversations on a wide range of topics</p>
+              <span className="font-medium mb-1">Knowledgeable</span>
+              <p>Access information on a wide range of subjects</p>
             </div>
           </div>
         </div>
