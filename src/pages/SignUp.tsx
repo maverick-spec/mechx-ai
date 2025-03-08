@@ -2,8 +2,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignUp as ClerkSignUp, useAuth } from "@clerk/clerk-react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -19,9 +17,16 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1 pt-16">
+      <main className="flex-1 py-16">
         <div className="container px-4 py-10 md:py-16 max-w-6xl">
+          <div className="text-center mb-10">
+            <Link to="/" className="inline-flex items-center justify-center">
+              <h1 className="font-syne font-bold text-3xl">
+                <span className="text-mechatronix-600 mr-1">M</span>echX AI
+              </h1>
+            </Link>
+          </div>
+          
           <Button 
             variant="ghost" 
             asChild 
@@ -90,7 +95,6 @@ const SignUp = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

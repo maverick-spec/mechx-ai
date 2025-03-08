@@ -221,13 +221,13 @@ const AISearch = () => {
                       >
                         <Avatar className={`h-8 w-8 ${
                           message.role === "assistant" 
-                            ? "bg-mechatronix-600" 
-                            : "bg-primary"
+                            ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
+                            : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
                         }`}>
                           {message.role === "assistant" ? (
-                            <Bot className="h-5 w-5 text-white" />
+                            <Bot className="h-4 w-4 text-white" />
                           ) : (
-                            <User className="h-5 w-5 text-white" />
+                            <User className="h-4 w-4 text-white" />
                           )}
                         </Avatar>
                         
@@ -248,8 +248,8 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex gap-3 max-w-[80%]">
-                      <Avatar className="h-8 w-8 bg-mechatronix-600">
-                        <Bot className="h-5 w-5 text-white" />
+                      <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                        <Bot className="h-4 w-4 text-white" />
                       </Avatar>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />

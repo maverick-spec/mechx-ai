@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { SignedIn } from "@clerk/clerk-react";
 import { Github, Linkedin, Twitter } from "lucide-react";
@@ -9,7 +8,9 @@ export const Footer = () => {
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold">MechX AI</h3>
+            <h3 className="font-syne text-lg font-semibold">
+              <span className="text-mechatronix-600 mr-1">M</span>echX AI
+            </h3>
             <p className="text-sm text-muted-foreground">
               The future of engineering at your fingertips
             </p>

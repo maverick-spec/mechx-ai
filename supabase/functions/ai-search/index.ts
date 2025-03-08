@@ -21,9 +21,13 @@ serve(async (req) => {
     }
 
     if (!OPENAI_API_KEY) {
+      console.log("OpenAI API key is not configured");
       return new Response(
-        JSON.stringify({ error: "OpenAI API key is not configured" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ 
+          error: "OpenAI API key is not configured",
+          text: "The OpenAI API key is not configured. Please add it to your Supabase project's secrets with the name OPENAI_API_KEY."
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 

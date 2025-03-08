@@ -93,11 +93,13 @@ export function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold text-2xl text-mechatronix-600">MechX AI</span>
+            <span className="font-syne font-bold text-2xl">
+              <span className="text-mechatronix-600 mr-1">M</span>echX AI
+            </span>
           </Link>
         </div>
-        <div className="hidden md:flex md:flex-1">
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+        <div className="flex-1 flex justify-center">
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -112,7 +114,7 @@ export function Navbar() {
             ))}
           </nav>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <div className="flex items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
             <ThemeToggle />
             {isSignedIn ? (
