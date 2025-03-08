@@ -41,11 +41,11 @@ serve(async (req) => {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
+          model: "gpt-4o-mini",
           messages: [
             {
               role: "system",
-              content: "You are a mechatronics and robotics assistant. Your primary goal is to assist with mechatronics and robotics related questions. If the user asks about unrelated topics or just wants to chat, you should respond naturally and conversationally first, then gently guide the conversation back to mechatronics if appropriate. For project-related queries, provide detailed recommendations including difficulty level, components needed, and skills required."
+              content: "You are a friendly and helpful AI assistant. You can discuss any topic the user asks about, providing thoughtful and accurate information. If the topic relates to mechatronics or robotics, you can provide more detailed expertise in those areas, but you should respond naturally to any question or conversation topic."
             },
             {
               role: "user",
@@ -77,16 +77,7 @@ serve(async (req) => {
       
       // Fallback to mock response if OpenAI API call fails
       const mockResponse = {
-        text: `I'm sorry, I couldn't connect to my knowledge base at the moment. Based on your query "${query}", here are some general recommendations:
-
-If you're looking for mechatronics projects, consider:
-1. Smart home automation systems
-2. Line-following robots
-3. Weather monitoring stations with Arduino
-4. Automated plant watering systems
-5. DIY 3D printers or CNC machines
-
-Would you like to discuss any of these ideas in more detail?`
+        text: `I'm sorry, I couldn't connect to my knowledge base at the moment. Please try again later.`
       };
 
       return new Response(

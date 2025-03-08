@@ -142,7 +142,7 @@ const AISearch = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Footer only, no Navbar */}
+      {/* No Navbar, only Footer */}
       <main className="flex-1">
         <div className="container px-4 max-w-5xl mx-auto py-8">
           <div className="text-center mb-10 mt-8">
@@ -163,9 +163,9 @@ const AISearch = () => {
           </Button>
           
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">AI Project Search</h1>
+            <h1 className="text-3xl font-bold mb-2">AI Chat</h1>
             <p className="text-muted-foreground">
-              Ask about mechatronics projects and get personalized recommendations
+              Ask me any question and I'll do my best to help you
             </p>
           </div>
           
@@ -177,44 +177,44 @@ const AISearch = () => {
                 {messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-8">
                     <Bot className="h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-xl font-medium mb-2">How can I help you find projects?</h3>
+                    <h3 className="text-xl font-medium mb-2">How can I help you today?</h3>
                     <p className="text-muted-foreground max-w-md">
-                      Describe your interests, components you have, or skills you want to learn.
-                      I'll recommend suitable mechatronics projects.
+                      I can answer questions on any topic. I'm especially knowledgeable about 
+                      mechatronics and robotics if you're interested in those areas.
                     </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 w-full max-w-lg">
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Arduino projects for beginners")}
+                        onClick={() => handleSubmit("Tell me about yourself")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Arduino projects for beginners</span>
+                        <span className="truncate">Tell me about yourself</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Projects using Raspberry Pi and sensors")}
+                        onClick={() => handleSubmit("What can you help me with?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Projects using Raspberry Pi and sensors</span>
+                        <span className="truncate">What can you help me with?</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Robotics projects with computer vision")}
+                        onClick={() => handleSubmit("Suggest a beginner robotics project")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Robotics projects with computer vision</span>
+                        <span className="truncate">Suggest a beginner robotics project</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("IoT projects for smart home")}
+                        onClick={() => handleSubmit("How does machine learning work?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">IoT projects for smart home</span>
+                        <span className="truncate">How does machine learning work?</span>
                       </Button>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ const AISearch = () => {
                           message.role === "user" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <Avatar className={`h-8 w-8 mt-1 ${
+                        <Avatar className={`h-8 w-8 flex-shrink-0 ${
                           message.role === "assistant" 
                             ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
                             : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
@@ -258,12 +258,12 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <Avatar className="h-8 w-8 mt-1 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                      <Avatar className="h-8 w-8 flex-shrink-0 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
                         <Bot className="h-4 w-4 text-white" />
                       </Avatar>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />
-                        Searching for projects...
+                        Thinking...
                       </div>
                     </div>
                   </div>
@@ -283,7 +283,7 @@ const AISearch = () => {
                 >
                   <Textarea
                     ref={inputRef}
-                    placeholder="Ask anything about mechatronics projects..."
+                    placeholder="Ask me anything..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
