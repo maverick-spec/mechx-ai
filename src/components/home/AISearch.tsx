@@ -14,7 +14,7 @@ export const AISearch = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/ai-search?query=${encodeURIComponent(searchQuery.trim())}`);
-      // Reset scroll position when navigating to the search page
+      // Force scroll to top
       window.scrollTo(0, 0);
     }
   };
@@ -25,7 +25,7 @@ export const AISearch = () => {
       <div className="container px-4 md:px-6">
         <SectionHeading
           title="AI Chat Assistant"
-          subtitle="Ask me anything - from mechatronics projects to general knowledge"
+          subtitle="Ask me anything - I'm a helpful AI assistant ready to chat"
         />
 
         <div className="mt-10 max-w-2xl mx-auto">
@@ -46,11 +46,11 @@ export const AISearch = () => {
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm text-muted-foreground">
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
               <span className="font-medium mb-1">Knowledgeable</span>
-              <p>Ask about any topic or get help with technical questions</p>
+              <p>Ask about any topic or get help with any question</p>
             </div>
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
               <span className="font-medium mb-1">Helpful</span>
-              <p>Get assistance with your projects or learning journey</p>
+              <p>Get assistance on anything you're curious about</p>
             </div>
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">
               <span className="font-medium mb-1">Conversational</span>

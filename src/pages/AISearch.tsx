@@ -27,6 +27,7 @@ const AISearch = () => {
   const [initialQuery, setInitialQuery] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Extract query from URL params
   useEffect(() => {
@@ -173,14 +174,13 @@ const AISearch = () => {
           <Card className="mb-6 rounded-lg border overflow-hidden">
             <div className="flex flex-col h-[60vh]">
               {/* Messages area */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-6">
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6">
                 {messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-8">
                     <Bot className="h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="text-xl font-medium mb-2">How can I help you today?</h3>
                     <p className="text-muted-foreground max-w-md">
-                      I can answer questions on any topic. I'm especially knowledgeable about 
-                      mechatronics and robotics if you're interested in those areas.
+                      I can answer questions on any topic. Just ask me something, and I'll do my best to help!
                     </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 w-full max-w-lg">
@@ -203,10 +203,10 @@ const AISearch = () => {
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Suggest a beginner robotics project")}
+                        onClick={() => handleSubmit("Tell me a joke")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Suggest a beginner robotics project</span>
+                        <span className="truncate">Tell me a joke</span>
                       </Button>
                       <Button 
                         variant="outline" 
@@ -226,20 +226,22 @@ const AISearch = () => {
                     >
                       <div 
                         className={`flex items-start gap-3 max-w-[80%] ${
-                          message.role === "user" ? "flex-row-reverse" : ""
+                          message.role === "user" ? "flex-row-reverse" : "flex-row"
                         }`}
                       >
-                        <Avatar className={`h-8 w-8 flex-shrink-0 ${
-                          message.role === "assistant" 
-                            ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
-                            : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
-                        }`}>
-                          {message.role === "assistant" ? (
-                            <Bot className="h-4 w-4 text-white" />
-                          ) : (
-                            <User className="h-4 w-4 text-white" />
-                          )}
-                        </Avatar>
+                        <div className="flex-shrink-0 mt-1">
+                          <Avatar className={`h-8 w-8 ${
+                            message.role === "assistant" 
+                              ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
+                              : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
+                          }`}>
+                            {message.role === "assistant" ? (
+                              <Bot className="h-4 w-4 text-white" />
+                            ) : (
+                              <User className="h-4 w-4 text-white" />
+                            )}
+                          </Avatar>
+                        </div>
                         
                         <div 
                           className={`rounded-lg px-4 py-3 whitespace-pre-wrap ${
@@ -258,9 +260,11 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <Avatar className="h-8 w-8 flex-shrink-0 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
-                        <Bot className="h-4 w-4 text-white" />
-                      </Avatar>
+                      <div className="flex-shrink-0 mt-1">
+                        <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                          <Bot className="h-4 w-4 text-white" />
+                        </Avatar>
+                      </div>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />
                         Thinking...

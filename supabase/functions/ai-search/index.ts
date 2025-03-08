@@ -45,7 +45,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "You are a friendly and helpful AI assistant. You can discuss any topic the user asks about, providing thoughtful and accurate information. If the topic relates to mechatronics or robotics, you can provide more detailed expertise in those areas, but you should respond naturally to any question or conversation topic."
+              content: "You are a friendly and helpful AI assistant. Answer any questions the user asks in a conversational way. Be helpful, friendly, and engaging."
             },
             {
               role: "user",
@@ -75,13 +75,10 @@ serve(async (req) => {
     } catch (error) {
       console.error("OpenAI API Error:", error);
       
-      // Fallback to mock response if OpenAI API call fails
-      const mockResponse = {
-        text: `I'm sorry, I couldn't connect to my knowledge base at the moment. Please try again later.`
-      };
-
       return new Response(
-        JSON.stringify(mockResponse),
+        JSON.stringify({ 
+          text: "I'm having trouble connecting to my brain right now. Please try again in a moment." 
+        }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
