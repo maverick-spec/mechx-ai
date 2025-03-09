@@ -1,11 +1,10 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-import { Bot, User, Send, RotateCw, ChevronRight, ArrowLeft } from "lucide-react";
+import { Bot, User, Send, RotateCw, ChevronRight, ArrowLeft, AlertTriangle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +13,7 @@ type Message = {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  isError?: boolean;
 };
 
 const AISearch = () => {
@@ -28,7 +28,6 @@ const AISearch = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Extract query from URL params
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const queryParam = searchParams.get("query");
@@ -39,7 +38,6 @@ const AISearch = () => {
       handleSubmit(queryParam);
     }
     
-    // Always scroll to top when page loads
     window.scrollTo(0, 0);
   }, [location.search]);
 
@@ -51,7 +49,6 @@ const AISearch = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Save search query to Supabase
   const saveSearchQuery = async (queryText: string) => {
     try {
       const { error } = await supabase.rpc('save_search_query', { 
@@ -69,7 +66,6 @@ const AISearch = () => {
   const handleSubmit = async (userQuery: string = query) => {
     if (!userQuery.trim()) return;
     
-    // Add user message to chat
     const userMessage: Message = {
       role: "user",
       content: userQuery,
@@ -80,11 +76,9 @@ const AISearch = () => {
     setLoading(true);
     setQuery("");
     
-    // Save the search query to Supabase
     await saveSearchQuery(userQuery);
     
     try {
-      // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('ai-search', {
         body: { query: userQuery }
       });
@@ -102,13 +96,13 @@ const AISearch = () => {
       const aiResponse: Message = {
         role: "assistant",
         content: data.text,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isError: data.text.includes("quota has been exceeded") || data.text.includes("technical difficulties")
       };
       
       setMessages((prevMessages) => [...prevMessages, aiResponse]);
       setLoading(false);
       
-      // Focus the input after response is received
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
@@ -117,11 +111,11 @@ const AISearch = () => {
       console.error("Error getting AI response:", error);
       setLoading(false);
       
-      // Fallback response in case of error
       const fallbackResponse: Message = {
         role: "assistant",
         content: "I'm sorry, I couldn't process your request at the moment. Please try again later.",
-        timestamp: new Date()
+        timestamp: new Date(),
+        isError: true
       };
       
       setMessages((prevMessages) => [...prevMessages, fallbackResponse]);
@@ -143,13 +137,11 @@ const AISearch = () => {
 
   const goBack = () => {
     navigate("/");
-    // Force scroll to top
     window.scrollTo(0, 0);
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* No Navbar, only Footer */}
       <main className="flex-1">
         <div className="container px-4 max-w-5xl mx-auto py-8">
           <div className="text-center mb-10 mt-8">
@@ -176,10 +168,8 @@ const AISearch = () => {
             </p>
           </div>
           
-          {/* Chat container */}
           <Card className="mb-6 rounded-lg border overflow-hidden">
             <div className="flex flex-col h-[60vh]">
-              {/* Messages area */}
               <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6">
                 {messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-8">
@@ -242,7 +232,11 @@ const AISearch = () => {
                         }`}>
                           <div className="flex items-center justify-center w-full h-full">
                             {message.role === "assistant" ? (
-                              <Bot className="h-4 w-4 text-white" />
+                              message.isError ? (
+                                <AlertTriangle className="h-4 w-4 text-white" />
+                              ) : (
+                                <Bot className="h-4 w-4 text-white" />
+                              )
                             ) : (
                               <User className="h-4 w-4 text-white" />
                             )}
@@ -252,11 +246,29 @@ const AISearch = () => {
                         <div 
                           className={`rounded-lg px-4 py-3 whitespace-pre-wrap ${
                             message.role === "assistant" 
-                              ? "bg-muted" 
+                              ? message.isError
+                                ? "bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-300"
+                                : "bg-muted" 
                               : "bg-primary text-primary-foreground"
                           }`}
                         >
                           {message.content}
+                          
+                          {message.isError && message.content.includes("quota has been exceeded") && (
+                            <div className="mt-2 text-sm">
+                              <a 
+                                href="https://platform.openai.com/signup" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center"
+                              >
+                                Get a new OpenAI API key
+                                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                              </a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -282,7 +294,6 @@ const AISearch = () => {
                 <div ref={messagesEndRef} />
               </div>
               
-              {/* Input area */}
               <div className="border-t p-4">
                 <form 
                   onSubmit={(e) => {

@@ -42,7 +42,7 @@ serve(async (req) => {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
+          model: "gpt-3.5-turbo", // Use a more cost-effective model
           messages: [
             {
               role: "system",
@@ -62,6 +62,19 @@ serve(async (req) => {
       if (!openAIResponse.ok) {
         const errorData = await openAIResponse.json();
         console.error("OpenAI API error details:", JSON.stringify(errorData));
+        
+        // Check specifically for quota exceeded error
+        if (errorData.error?.type === "insufficient_quota" || 
+            errorData.error?.message?.includes("quota") || 
+            errorData.error?.message?.includes("exceeded")) {
+          return new Response(
+            JSON.stringify({ 
+              text: "Sorry, the OpenAI API quota has been exceeded. This usually happens with free API keys after they've been used for a while. You'll need to either wait for the quota to reset or upgrade to a paid plan." 
+            }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+        
         throw new Error(errorData.error?.message || "Error calling OpenAI API");
       }
 
@@ -79,9 +92,16 @@ serve(async (req) => {
       console.error("OpenAI API Error:", error);
       
       // Return a more specific error message
+      let errorMessage = "I'm experiencing technical difficulties with my AI service. Please try again in a moment.";
+      
+      // Check if the error message contains quota-related terms
+      if (error.message?.includes("quota") || error.message?.includes("exceeded") || error.message?.includes("billing")) {
+        errorMessage = "Sorry, the OpenAI API quota has been exceeded. This usually happens with free API keys. You'll need to either wait for the quota to reset or upgrade to a paid plan.";
+      }
+      
       return new Response(
         JSON.stringify({ 
-          text: "I'm experiencing technical difficulties with my AI service. Please try again in a moment. Error: " + error.message 
+          text: errorMessage
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
