@@ -52,11 +52,11 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
-  // Theme initialization - Default to light mode
+  // Theme initialization - Default to light mode always
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     
-    // Default to light mode unless explicitly set to dark
+    // Default to light mode unless explicitly set to dark by the user previously
     if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {

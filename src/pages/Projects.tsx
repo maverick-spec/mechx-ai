@@ -85,11 +85,35 @@ const Projects = () => {
   const loadMoreProjects = () => {
     setVisibleProjects(prev => prev + 10);
   };
+  
+  // Helper function to get badge color based on category
+  const getCategoryBadgeStyle = (category) => {
+    const categoryColors = {
+      "Robotics": "bg-blue-600 text-white",
+      "Drones": "bg-purple-600 text-white",
+      "IoT": "bg-green-600 text-white",
+      "AI": "bg-red-600 text-white",
+      "Electronics": "bg-yellow-600 text-black",
+    };
+    
+    return categoryColors[category] || "bg-gray-700 text-white";
+  };
+  
+  // Helper function to get badge color based on difficulty
+  const getDifficultyBadgeStyle = (difficulty) => {
+    const difficultyColors = {
+      "beginner": "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
+      "intermediate": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100",
+      "advanced": "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
+    };
+    
+    return difficultyColors[difficulty] || "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100";
+  };
 
   return (
     <div className="min-h-screen flex flex-col w-full">
       <Navbar />
-      <main className="flex-1 pt-24">
+      <main className="flex-1 pt-16 sm:pt-24">
         <div className="container px-4 md:px-6 py-12">
           <SectionHeading
             title="Projects Gallery"
@@ -169,10 +193,10 @@ const Projects = () => {
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                       />
                       <div className="absolute top-2 right-2 flex gap-2">
-                        <Badge variant="secondary" className="bg-black/60 text-white backdrop-blur-sm">
+                        <Badge variant="secondary" className={getCategoryBadgeStyle(project.category)}>
                           {project.category}
                         </Badge>
-                        <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+                        <Badge variant="outline" className={getDifficultyBadgeStyle(project.difficulty)}>
                           {project.difficulty}
                         </Badge>
                       </div>
@@ -195,9 +219,11 @@ const Projects = () => {
                       </div>
                     </CardContent>
                     <CardFooter className="p-4 flex justify-between border-t border-border/50">
-                      <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary">
-                        <Code className="h-3.5 w-3.5" />
-                        View Code
+                      <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary" asChild>
+                        <Link to={project.difficulty !== "beginner" ? "/pricing" : `/projects/${project.id}`}>
+                          <Code className="h-3.5 w-3.5" />
+                          View Code
+                        </Link>
                       </Button>
                       <Button variant="ghost" size="sm" className="text-xs gap-1 hover:bg-secondary" asChild>
                         <Link to={`/projects/${project.id}`}>

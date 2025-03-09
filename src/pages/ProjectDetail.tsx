@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -96,10 +96,34 @@ const ProjectDetail = () => {
     }
   }, [project]);
 
+  // Helper function to get badge color based on category
+  const getCategoryBadgeStyle = (category) => {
+    const categoryColors = {
+      "Robotics": "bg-blue-600 text-white",
+      "Drones": "bg-purple-600 text-white",
+      "IoT": "bg-green-600 text-white",
+      "AI": "bg-red-600 text-white",
+      "Electronics": "bg-yellow-600 text-black",
+    };
+    
+    return categoryColors[category] || "bg-gray-700 text-white";
+  };
+  
+  // Helper function to get badge color based on difficulty
+  const getDifficultyBadgeStyle = (difficulty) => {
+    const difficultyColors = {
+      "beginner": "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100",
+      "intermediate": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100",
+      "advanced": "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100"
+    };
+    
+    return difficultyColors[difficulty] || "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100";
+  };
+
   return (
     <div className="min-h-screen flex flex-col w-full">
       <Navbar />
-      <main className="flex-1 pt-24">
+      <main className="flex-1 pt-16 sm:pt-24">
         {loading ? (
           <div className="container px-4 md:px-6 py-12">
             <Skeleton className="h-16 w-2/3 mx-auto mb-12" />
@@ -143,10 +167,10 @@ const ProjectDetail = () => {
                   </div>
                   <div className="p-6 flex flex-wrap justify-between items-center">
                     <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
-                      <Badge variant="secondary" className="bg-secondary">
+                      <Badge variant="secondary" className={getCategoryBadgeStyle(project.category)}>
                         {project.category}
                       </Badge>
-                      <Badge variant="outline" className="capitalize">
+                      <Badge variant="outline" className={getDifficultyBadgeStyle(project.difficulty)}>
                         {project.difficulty}
                       </Badge>
                       {project.tags?.map((tag) => (
@@ -156,11 +180,16 @@ const ProjectDetail = () => {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="gap-2" asChild>
-                        <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="gap-2" 
+                        asChild
+                      >
+                        <Link to={project.difficulty !== "beginner" ? "/pricing" : `/projects/${project.id}`}>
                           <Code className="h-4 w-4" />
                           Source Code
-                        </a>
+                        </Link>
                       </Button>
                       {project.project_url && (
                         <Button variant="default" size="sm" className="gap-2" asChild>
@@ -342,7 +371,7 @@ const ProjectDetail = () => {
 
                 {/* Related Projects */}
                 <div className="mb-16">
-                  <h3 className="text-2xl font-bold mb-8">New Projects</h3>
+                  <h3 className="text-2xl font-bold mb-8">Related Projects</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {relatedProjects.map((relatedProject) => (
                       <Card 
@@ -365,11 +394,11 @@ const ProjectDetail = () => {
                           </p>
                         </CardContent>
                         <div className="absolute bottom-4 left-4 right-4 flex justify-between">
-                          <Badge variant="secondary" className="bg-secondary text-xs">
+                          <Badge variant="secondary" className={getCategoryBadgeStyle(relatedProject.category)}>
                             {relatedProject.category}
                           </Badge>
                           <Button variant="ghost" size="sm" className="h-7 text-xs" asChild>
-                            <a href={`/projects/${relatedProject.id}`}>View Project</a>
+                            <Link to={`/projects/${relatedProject.id}`}>View Details</Link>
                           </Button>
                         </div>
                       </Card>
@@ -402,11 +431,11 @@ const ProjectDetail = () => {
                           </p>
                         </CardContent>
                         <div className="absolute bottom-4 left-4 right-4 flex justify-between">
-                          <Badge variant="secondary" className="bg-secondary text-xs">
+                          <Badge variant="secondary" className={getCategoryBadgeStyle(featuredProject.category)}>
                             {featuredProject.category}
                           </Badge>
                           <Button variant="ghost" size="sm" className="h-7 text-xs" asChild>
-                            <a href={`/projects/${featuredProject.id}`}>View Project</a>
+                            <Link to={`/projects/${featuredProject.id}`}>View Details</Link>
                           </Button>
                         </div>
                       </Card>
@@ -421,7 +450,7 @@ const ProjectDetail = () => {
             <h2 className="text-2xl font-bold mb-4">Project Not Found</h2>
             <p className="text-muted-foreground mb-8">The project you're looking for doesn't exist or has been removed.</p>
             <Button asChild>
-              <a href="/projects">Back to Projects</a>
+              <Link to="/projects">Back to Projects</Link>
             </Button>
           </div>
         )}
