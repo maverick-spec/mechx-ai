@@ -21,7 +21,7 @@ serve(async (req) => {
     }
 
     if (!OPENAI_API_KEY) {
-      console.log("OpenAI API key is not configured");
+      console.error("OpenAI API key is not configured");
       return new Response(
         JSON.stringify({ 
           error: "OpenAI API key is not configured",
@@ -34,6 +34,7 @@ serve(async (req) => {
     // Call OpenAI API with the query
     try {
       console.log("Calling OpenAI API with query:", query);
+      
       const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -45,7 +46,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "You are a helpful, friendly, and knowledgeable AI assistant. Answer any questions accurately and conversationally. If you don't know something, admit it. Be helpful, engaging, and personable in your responses."
+              content: "You are a helpful and knowledgeable AI assistant. Answer questions directly, accurately, and conversationally. If you don't know something, admit it honestly. Your responses should be engaging, informative, and friendly."
             },
             {
               role: "user",
@@ -57,9 +58,10 @@ serve(async (req) => {
         }),
       });
 
+      // Check if the API request was successful
       if (!openAIResponse.ok) {
         const errorData = await openAIResponse.json();
-        console.error("OpenAI API error:", errorData);
+        console.error("OpenAI API error details:", JSON.stringify(errorData));
         throw new Error(errorData.error?.message || "Error calling OpenAI API");
       }
 
@@ -76,9 +78,10 @@ serve(async (req) => {
     } catch (error) {
       console.error("OpenAI API Error:", error);
       
+      // Return a more specific error message
       return new Response(
         JSON.stringify({ 
-          text: "I'm having trouble connecting to my brain right now. Please try again in a moment." 
+          text: "I'm experiencing technical difficulties with my AI service. Please try again in a moment. Error: " + error.message 
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );

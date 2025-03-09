@@ -39,7 +39,7 @@ const AISearch = () => {
       handleSubmit(queryParam);
     }
     
-    // Scroll to top when page loads
+    // Always scroll to top when page loads
     window.scrollTo(0, 0);
   }, [location.search]);
 
@@ -54,7 +54,6 @@ const AISearch = () => {
   // Save search query to Supabase
   const saveSearchQuery = async (queryText: string) => {
     try {
-      // Using RPC to call the function we created
       const { error } = await supabase.rpc('save_search_query', { 
         query_text: queryText 
       });
@@ -91,7 +90,13 @@ const AISearch = () => {
       });
       
       if (error) {
+        console.error("Edge function error:", error);
         throw new Error(error.message);
+      }
+      
+      if (!data || !data.text) {
+        console.error("Invalid response from edge function:", data);
+        throw new Error("Invalid response from AI service");
       }
       
       const aiResponse: Message = {
@@ -181,7 +186,7 @@ const AISearch = () => {
                     <Bot className="h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="text-xl font-medium mb-2">How can I help you today?</h3>
                     <p className="text-muted-foreground max-w-md">
-                      Ask me anything! I'm an AI assistant powered by ChatGPT that can answer questions on any topic.
+                      Ask me anything! I'm an AI assistant that can answer questions on any topic.
                     </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 w-full max-w-lg">
@@ -196,26 +201,26 @@ const AISearch = () => {
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Tell me a fun fact about space")}
+                        onClick={() => handleSubmit("Tell me about mechanical engineering")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Tell me a fun fact about space</span>
+                        <span className="truncate">Tell me about mechanical engineering</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("How does a computer processor work?")}
+                        onClick={() => handleSubmit("What are the latest trends in robotics?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">How does a computer processor work?</span>
+                        <span className="truncate">What are the latest trends in robotics?</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Write a short poem about technology")}
+                        onClick={() => handleSubmit("Explain how electric motors work")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Write a short poem about technology</span>
+                        <span className="truncate">Explain how electric motors work</span>
                       </Button>
                     </div>
                   </div>
@@ -230,21 +235,19 @@ const AISearch = () => {
                           message.role === "user" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <div className="flex-shrink-0">
-                          <Avatar className={`h-8 w-8 ${
-                            message.role === "assistant" 
-                              ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
-                              : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
-                          }`}>
-                            <div className="flex items-center justify-center w-full h-full">
-                              {message.role === "assistant" ? (
-                                <Bot className="h-4 w-4 text-white" />
-                              ) : (
-                                <User className="h-4 w-4 text-white" />
-                              )}
-                            </div>
-                          </Avatar>
-                        </div>
+                        <Avatar className={`h-8 w-8 flex-shrink-0 ${
+                          message.role === "assistant" 
+                            ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
+                            : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
+                        }`}>
+                          <div className="flex items-center justify-center w-full h-full">
+                            {message.role === "assistant" ? (
+                              <Bot className="h-4 w-4 text-white" />
+                            ) : (
+                              <User className="h-4 w-4 text-white" />
+                            )}
+                          </div>
+                        </Avatar>
                         
                         <div 
                           className={`rounded-lg px-4 py-3 whitespace-pre-wrap ${
@@ -263,13 +266,11 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <div className="flex-shrink-0">
-                        <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
-                          <div className="flex items-center justify-center w-full h-full">
-                            <Bot className="h-4 w-4 text-white" />
-                          </div>
-                        </Avatar>
-                      </div>
+                      <Avatar className="h-8 w-8 flex-shrink-0 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                        <div className="flex items-center justify-center w-full h-full">
+                          <Bot className="h-4 w-4 text-white" />
+                        </div>
+                      </Avatar>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />
                         Thinking...
@@ -302,7 +303,7 @@ const AISearch = () => {
                   <Button 
                     type="submit" 
                     size="icon" 
-                    className="h-10 w-10 rounded-full"
+                    className="h-10 w-10 rounded-full flex-shrink-0"
                     disabled={!query.trim() || loading}
                   >
                     <Send className="h-5 w-5" />
