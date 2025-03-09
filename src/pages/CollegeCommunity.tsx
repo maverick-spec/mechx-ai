@@ -1,8 +1,7 @@
-
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
-import { Graduation, Users, School, BookOpen, Award, Calendar, ArrowRight } from "lucide-react";
+import { GraduationCap, Users, School, BookOpen, Award, Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CollegeCommunity = () => {
@@ -65,7 +64,7 @@ const CollegeCommunity = () => {
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="bg-primary/10 p-2 rounded-full">
-                      <Graduation className="h-5 w-5 text-primary" />
+                      <GraduationCap className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <h3 className="font-medium">Student Development</h3>
