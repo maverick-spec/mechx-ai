@@ -19,8 +19,13 @@ const navItems = [
     active: false,
   },
   {
-    href: "/community",
-    label: "Community",
+    href: "/college-community",
+    label: "College Community",
+    active: false,
+  },
+  {
+    href: "/students-community",
+    label: "Students Community",
     active: false,
   },
   {
@@ -62,9 +67,8 @@ function ThemeToggle() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
-    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+    if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
       setIsDarkMode(true);
     }

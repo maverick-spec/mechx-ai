@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import TeamUp from "./pages/TeamUp";
-import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
 import FAQs from "./pages/FAQs";
 import Contact from "./pages/Contact";
@@ -22,6 +21,8 @@ import Pricing from "./pages/Pricing";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AISearch from "./pages/AISearch";
+import CollegeCommunity from "./pages/CollegeCommunity";
+import StudentsCommunity from "./pages/StudentsCommunity";
 
 const queryClient = new QueryClient();
 
@@ -51,15 +52,16 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
-  // Theme initialization
+  // Theme initialization - Default to light mode
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     
-    // Changed to prefer light mode by default
+    // Default to light mode unless explicitly set to dark
     if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
 
     // Set the document title to the new name
@@ -89,12 +91,13 @@ const App = () => {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/cookies" element={<Cookies />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/college-community" element={<CollegeCommunity />} />
+              <Route path="/students-community" element={<StudentsCommunity />} />
               
               {/* Protected routes */}
               <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
               <Route path="/projects/:id" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>} />
               <Route path="/team-up" element={<ProtectedRoute><TeamUp /></ProtectedRoute>} />
-              <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
               
               {/* 404 page */}
               <Route path="*" element={<NotFound />} />

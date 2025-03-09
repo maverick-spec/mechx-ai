@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ChevronRight } from "lucide-react";
 
 export const AISearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,9 +19,20 @@ export const AISearch = () => {
     }
   };
 
+  const exampleQuestions = [
+    "What is artificial intelligence in robotics?",
+    "Explain how electric motors work",
+    "Latest trends in mechatronics"
+  ];
+
+  const handleExampleClick = (question: string) => {
+    navigate(`/ai-search?query=${encodeURIComponent(question)}`);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section className="py-16 md:py-24 w-full bg-muted/30 relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:18px_18px]"></div>
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       <div className="container px-4 md:px-6">
         <SectionHeading
           title="AI Chat Assistant"
@@ -42,6 +53,20 @@ export const AISearch = () => {
               Chat with AI
             </Button>
           </form>
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            {exampleQuestions.map((question, index) => (
+              <Button 
+                key={index}
+                variant="outline" 
+                className="justify-start text-left h-auto py-3 hover:bg-muted"
+                onClick={() => handleExampleClick(question)}
+              >
+                <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0 text-primary" />
+                <span className="truncate">{question}</span>
+              </Button>
+            ))}
+          </div>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm text-muted-foreground">
             <div className="flex flex-col items-center text-center p-4 rounded-lg bg-card/50 backdrop-blur-sm">

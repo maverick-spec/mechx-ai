@@ -117,17 +117,24 @@ export const HeroSection = () => {
           </form>
         </div>
 
-        {/* Hero Image */}
+        {/* Hero Video */}
         <div className="mt-12 md:mt-16 relative max-w-5xl mx-auto animate-fade-in" style={{ animationDelay: "0.6s" }}>
+          <div className="relative">
+            <Safari url="mechx-ai.xyz" className="size-full">
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src="https://www.pexels.com/download/video/7868125/?fps=25.0&h=1080&w=1920" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </Safari>
           </div>
-              <div className="relative">
-            <Safari
-        url="mechx-ai.xyz"
-        className="size-full"
-        imageSrc="/public/images/herosection.png"
-            />
-    </div>
         </div>
+      </div>
     </section>
   );
 };
