@@ -138,6 +138,8 @@ const AISearch = () => {
 
   const goBack = () => {
     navigate("/");
+    // Force scroll to top
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -179,41 +181,41 @@ const AISearch = () => {
                     <Bot className="h-12 w-12 text-muted-foreground mb-4" />
                     <h3 className="text-xl font-medium mb-2">How can I help you today?</h3>
                     <p className="text-muted-foreground max-w-md">
-                      I can answer questions on any topic. Just ask me something, and I'll do my best to help!
+                      Ask me anything! I'm an AI assistant powered by ChatGPT that can answer questions on any topic.
                     </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 w-full max-w-lg">
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Hello, how are you today?")}
+                        onClick={() => handleSubmit("What is artificial intelligence?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Hello, how are you today?</span>
+                        <span className="truncate">What is artificial intelligence?</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("What can you help me with?")}
+                        onClick={() => handleSubmit("Tell me a fun fact about space")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">What can you help me with?</span>
+                        <span className="truncate">Tell me a fun fact about space</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Tell me a joke")}
+                        onClick={() => handleSubmit("How does a computer processor work?")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Tell me a joke</span>
+                        <span className="truncate">How does a computer processor work?</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         className="justify-start text-left h-auto py-3"
-                        onClick={() => handleSubmit("Explain artificial intelligence")}
+                        onClick={() => handleSubmit("Write a short poem about technology")}
                       >
                         <ChevronRight className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate">Explain artificial intelligence</span>
+                        <span className="truncate">Write a short poem about technology</span>
                       </Button>
                     </div>
                   </div>
@@ -228,19 +230,21 @@ const AISearch = () => {
                           message.role === "user" ? "flex-row-reverse" : ""
                         }`}
                       >
-                        <Avatar className={`h-8 w-8 flex-shrink-0 ${
-                          message.role === "assistant" 
-                            ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
-                            : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
-                        }`}>
-                          <div className="flex items-center justify-center w-full h-full">
-                            {message.role === "assistant" ? (
-                              <Bot className="h-4 w-4 text-white" />
-                            ) : (
-                              <User className="h-4 w-4 text-white" />
-                            )}
-                          </div>
-                        </Avatar>
+                        <div className="flex-shrink-0">
+                          <Avatar className={`h-8 w-8 ${
+                            message.role === "assistant" 
+                              ? "bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background" 
+                              : "bg-primary ring-2 ring-primary-foreground/30 ring-offset-2 ring-offset-background"
+                          }`}>
+                            <div className="flex items-center justify-center w-full h-full">
+                              {message.role === "assistant" ? (
+                                <Bot className="h-4 w-4 text-white" />
+                              ) : (
+                                <User className="h-4 w-4 text-white" />
+                              )}
+                            </div>
+                          </Avatar>
+                        </div>
                         
                         <div 
                           className={`rounded-lg px-4 py-3 whitespace-pre-wrap ${
@@ -259,11 +263,13 @@ const AISearch = () => {
                 {loading && (
                   <div className="flex justify-start">
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <Avatar className="h-8 w-8 flex-shrink-0 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
-                        <div className="flex items-center justify-center w-full h-full">
-                          <Bot className="h-4 w-4 text-white" />
-                        </div>
-                      </Avatar>
+                      <div className="flex-shrink-0">
+                        <Avatar className="h-8 w-8 bg-mechatronix-600 ring-2 ring-mechatronix-400 ring-offset-2 ring-offset-background">
+                          <div className="flex items-center justify-center w-full h-full">
+                            <Bot className="h-4 w-4 text-white" />
+                          </div>
+                        </Avatar>
+                      </div>
                       <div className="rounded-lg px-4 py-3 bg-muted flex items-center">
                         <RotateCw className="h-4 w-4 animate-spin mr-2" />
                         Thinking...

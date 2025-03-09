@@ -45,7 +45,7 @@ serve(async (req) => {
           messages: [
             {
               role: "system",
-              content: "You are a friendly and helpful AI assistant. Respond conversationally to any question or statement. Be helpful, personable and engaging. If someone says hello or hi, greet them back warmly."
+              content: "You are a helpful, friendly, and knowledgeable AI assistant. Answer any questions accurately and conversationally. If you don't know something, admit it. Be helpful, engaging, and personable in your responses."
             },
             {
               role: "user",
