@@ -113,7 +113,7 @@ export function Navbar() {
               </Link>
             ))}
             
-            {/* Community Dropdown - Made text foreground color instead of muted */}
+            {/* Community Dropdown - Text color is now foreground/white */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="transition-colors hover:text-foreground flex items-center gap-1 text-foreground text-sm font-medium">

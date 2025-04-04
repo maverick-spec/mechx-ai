@@ -8,9 +8,9 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProjectIdeaForm from "@/components/forms/ProjectIdeaForm";
 
-// Import college and student community content
-import CollegeCommunity from "./CollegeCommunity";
-import StudentsCommunity from "./StudentsCommunity";
+// Import college and student community content components
+import CollegeContent from "@/components/community/CollegeContent";
+import StudentsContent from "@/components/community/StudentsContent";
 
 const Community = () => {
   const [searchParams] = useSearchParams();
@@ -58,13 +58,19 @@ const Community = () => {
                     <TabsTrigger value="students">Students Community</TabsTrigger>
                     <TabsTrigger value="college">College Community</TabsTrigger>
                   </TabsList>
+                  
+                  <TabsContent value="students">
+                    <StudentsContent />
+                  </TabsContent>
+                  
+                  <TabsContent value="college">
+                    <CollegeContent />
+                  </TabsContent>
                 </Tabs>
               </div>
             </div>
           </div>
         </section>
-        
-        {type === "students" ? <StudentsCommunity /> : <CollegeCommunity />}
       </main>
       <Footer />
     </div>
