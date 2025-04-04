@@ -10,9 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Code, ExternalLink, Search } from "lucide-react";
+import { Code, ExternalLink, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
+
+const PROJECTS_PER_PAGE = 6;
 
 const Projects = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,9 +30,9 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [difficultyFilter, setDifficultyFilter] = useState("beginner"); // Default to beginner
-  const [visibleProjects, setVisibleProjects] = useState(20); // Default to 20 projects
+  const [difficultyFilter, setDifficultyFilter] = useState("beginner");
   const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -64,6 +74,7 @@ const Projects = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchParams({ search: searchQuery });
+    setCurrentPage(1); // Reset to first page on new search
   };
 
   const filteredProjects = projects.filter(project => {
@@ -75,16 +86,29 @@ const Projects = () => {
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
-  // Get only visible number of projects
-  const displayedProjects = filteredProjects.slice(0, visibleProjects);
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
+  const endIndex = startIndex + PROJECTS_PER_PAGE;
+  const displayedProjects = filteredProjects.slice(startIndex, endIndex);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo(0, 0);
+    }
+  };
 
   // Extract unique categories for filter
   const categories = ["all", ...new Set(projects.map(project => project.category))];
   const difficulties = ["all", "beginner", "intermediate", "advanced"];
-
-  const loadMoreProjects = () => {
-    setVisibleProjects(prev => prev + 10);
-  };
   
   // Helper function to get badge color based on category
   const getCategoryBadgeStyle = (category) => {
@@ -132,7 +156,10 @@ const Projects = () => {
               />
               <Button type="submit" className="ml-2">Search</Button>
             </form>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <Select value={categoryFilter} onValueChange={(value) => {
+              setCategoryFilter(value);
+              setCurrentPage(1); // Reset to first page on filter change
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
@@ -144,7 +171,10 @@ const Projects = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
+            <Select value={difficultyFilter} onValueChange={(value) => {
+              setDifficultyFilter(value);
+              setCurrentPage(1); // Reset to first page on filter change
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by difficulty" />
               </SelectTrigger>
@@ -160,7 +190,7 @@ const Projects = () => {
 
           {/* Projects Count */}
           <div className="text-sm text-muted-foreground mb-6">
-            Showing {displayedProjects.length} of {filteredProjects.length} projects
+            Showing {startIndex + 1}-{Math.min(endIndex, filteredProjects.length)} of {filteredProjects.length} projects
           </div>
 
           {/* Projects Grid */}
@@ -181,7 +211,7 @@ const Projects = () => {
                 </div>
               ))}
             </div>
-          ) : displayedProjects.length > 0 ? (
+          ) : filteredProjects.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedProjects.map((project) => (
@@ -236,12 +266,32 @@ const Projects = () => {
                 ))}
               </div>
               
-              {/* Load More Button */}
-              {filteredProjects.length > visibleProjects && (
-                <div className="flex justify-center mt-10">
-                  <Button onClick={loadMoreProjects} variant="outline">
-                    Load More Projects
-                  </Button>
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-10">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={handlePreviousPage} 
+                          className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      
+                      <PaginationItem className="flex items-center px-4">
+                        <span className="text-sm">
+                          Page {currentPage} of {totalPages}
+                        </span>
+                      </PaginationItem>
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={handleNextPage} 
+                          className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
                 </div>
               )}
             </>
@@ -254,6 +304,7 @@ const Projects = () => {
                 setCategoryFilter("all");
                 setDifficultyFilter("beginner");
                 setSearchParams({});
+                setCurrentPage(1);
               }}>
                 Clear Filters
               </Button>

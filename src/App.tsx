@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,6 +23,7 @@ import AISearch from "./pages/AISearch";
 import CollegeCommunity from "./pages/CollegeCommunity";
 import StudentsCommunity from "./pages/StudentsCommunity";
 import Community from "./pages/Community";
+import PremadeProjects from "./pages/PremadeProjects";
 
 const queryClient = new QueryClient();
 
@@ -92,9 +92,12 @@ const App = () => {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/cookies" element={<Cookies />} />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/college-community" element={<CollegeCommunity />} />
-              <Route path="/students-community" element={<StudentsCommunity />} />
+              <Route path="/premade-projects" element={<PremadeProjects />} />
               <Route path="/community" element={<Community />} />
+              
+              {/* Keep these routes for backward compatibility */}
+              <Route path="/college-community" element={<Navigate to="/community?type=college" replace />} />
+              <Route path="/students-community" element={<Navigate to="/community?type=students" replace />} />
               
               {/* Protected routes */}
               <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />

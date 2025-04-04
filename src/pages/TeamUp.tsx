@@ -13,6 +13,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users, Calendar, ChevronRight } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ProjectIdeaForm from "@/components/forms/ProjectIdeaForm";
+import { Link } from "react-router-dom";
 
 interface TeamUp {
   id: string;
@@ -45,12 +48,13 @@ const mockTeamMembers = [
 ];
 
 const TeamUp = () => {
-  const { data: teamOpportunities, isLoading, error } = useQuery({
+  const { data: teamOpportunities, isLoading, error, refetch } = useQuery({
     queryKey: ["team-up"],
     queryFn: fetchTeamUpOpportunities,
   });
 
   const [activeDifficulty, setActiveDifficulty] = useState<string>("all");
+  const [showProjectForm, setShowProjectForm] = useState(false);
   const { toast } = useToast();
 
   const difficulties = ["all", "beginner", "intermediate", "advanced"];
@@ -63,14 +67,6 @@ const TeamUp = () => {
     toast({
       title: "Application Submitted",
       description: `You've applied to join "${teamName}". The team leader will contact you soon.`,
-      variant: "default",
-    });
-  };
-
-  const handleSubmitIdea = () => {
-    toast({
-      title: "Project Idea Submitted",
-      description: "Thank you for sharing your project idea! We'll review it and help you find team members.",
       variant: "default",
     });
   };
@@ -92,12 +88,21 @@ const TeamUp = () => {
             </p>
 
             <div className="mt-6 flex flex-wrap justify-center gap-4">
-              <Button 
-                onClick={handleSubmitIdea}
-                className="bg-mechatronix-600 hover:bg-mechatronix-700"
-              >
-                Submit Project Idea
-              </Button>
+              <Dialog open={showProjectForm} onOpenChange={setShowProjectForm}>
+                <DialogTrigger asChild>
+                  <Button className="bg-mechatronix-600 hover:bg-mechatronix-700">
+                    Submit Project Idea
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <ProjectIdeaForm 
+                    onClose={() => {
+                      setShowProjectForm(false);
+                      refetch(); // Refresh data after submission
+                    }} 
+                  />
+                </DialogContent>
+              </Dialog>
               <Button variant="outline">
                 Browse All Teams
               </Button>
@@ -154,7 +159,7 @@ const TeamUp = () => {
                       >
                         <div className="relative h-48 overflow-hidden">
                           <img
-                            src={opportunity.image_url || 'https://via.placeholder.com/800x450?text=Team+Project'}
+                            src={opportunity.image_url || 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?q=80&w=2940&auto=format&fit=crop'}
                             alt={opportunity.title}
                             className="w-full h-full object-cover"
                           />
@@ -225,9 +230,11 @@ const TeamUp = () => {
           </Tabs>
 
           <div className="mt-16 flex justify-center">
-            <Button variant="outline" className="group">
-              View Community Forum
-              <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <Button variant="outline" className="group" asChild>
+              <Link to="/community">
+                View Community Forum
+                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
           </div>
         </div>

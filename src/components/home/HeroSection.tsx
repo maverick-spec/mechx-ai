@@ -1,5 +1,5 @@
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Zap } from "lucide-react";
@@ -41,9 +41,10 @@ export const HeroSection = () => {
             <span>Next-gen engineering solutions</span>
           </div>
           <Spotlight />
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
-            Future-Proof Your <Cover>Engineering</Cover> With{" "}
-            <WordRotate words={rotatingWords} />
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight flex flex-col gap-2">
+            <span>Future-Proof Your</span> 
+            <Cover><span>Engineering</span></Cover>
+            <span>With <WordRotate words={rotatingWords} /></span>
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in font-jakarta" style={{ animationDelay: "0.2s" }}>
