@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders } from "../_shared/cors.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.3";
 
 const DEEPSEEK_API_KEY = Deno.env.get("DEEPSEEK_API_KEY") || "";
 
@@ -82,33 +83,6 @@ serve(async (req) => {
       console.log("DeepSeek API response status:", deepseekResponse.status);
       
       const responseText = data.choices[0]?.message?.content || "";
-      
-      // Save conversation to Supabase if conversationId is provided
-      if (conversationId) {
-        const supabaseClient = createClient(
-          Deno.env.get('SUPABASE_URL') ?? '',
-          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-          { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
-        );
-
-        // Insert the message into the conversation_messages table
-        await supabaseClient
-          .from('conversation_messages')
-          .insert([
-            { 
-              conversation_id: conversationId,
-              role: 'user',
-              content: query,
-              timestamp: new Date().toISOString()
-            },
-            {
-              conversation_id: conversationId,
-              role: 'assistant',
-              content: responseText,
-              timestamp: new Date().toISOString()
-            }
-          ]);
-      }
 
       return new Response(
         JSON.stringify({ text: responseText, conversationId }),
