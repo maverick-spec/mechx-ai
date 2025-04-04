@@ -123,10 +123,10 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center">
                 <DropdownMenuItem asChild>
-                  <Link to="/college-community">College Community</Link>
+                  <Link to="/community?type=college">College Community</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/students-community">Students Community</Link>
+                  <Link to="/community?type=students">Students Community</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -182,12 +182,12 @@ export function Navbar() {
             
             <div className="border-t pt-2 mt-2">
               <div className="font-medium text-foreground mb-2">Community</div>
-              <Link to="/college-community" 
+              <Link to="/community?type=college" 
                 className="block ml-4 text-foreground hover:text-foreground"
                 onClick={mobileMenu.closeMenu}>
                 College Community
               </Link>
-              <Link to="/students-community" 
+              <Link to="/community?type=students" 
                 className="block ml-4 text-foreground hover:text-foreground"
                 onClick={mobileMenu.closeMenu}>
                 Students Community
