@@ -2,10 +2,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUser, UserButton } from "@clerk/clerk-react";
-import { Menu, Sun, Moon } from "lucide-react";
+import { Menu, Sun, Moon, ChevronDown } from "lucide-react";
 import { useMobileMenu } from "@/hooks/use-mobile-menu";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   {
@@ -16,16 +22,6 @@ const navItems = [
   {
     href: "/team-up",
     label: "Team Up",
-    active: false,
-  },
-  {
-    href: "/college-community",
-    label: "College Community",
-    active: false,
-  },
-  {
-    href: "/students-community",
-    label: "Students Community",
     active: false,
   },
   {
@@ -109,13 +105,31 @@ export function Navbar() {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "transition-colors text-muted-foreground hover:text-foreground flex items-center gap-1",
-                  item.active && "text-foreground"
+                  "transition-colors hover:text-foreground flex items-center gap-1",
+                  item.active ? "text-foreground" : "text-foreground"
                 )}
               >
                 {item.label}
               </Link>
             ))}
+            
+            {/* Community Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="transition-colors hover:text-foreground flex items-center gap-1 text-foreground text-sm font-medium">
+                  Community
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem asChild>
+                  <Link to="/college-community">College Community</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/students-community">Students Community</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
         </div>
         <div className="flex items-center justify-end space-x-4">
@@ -157,7 +171,7 @@ export function Navbar() {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "text-muted-foreground hover:text-foreground",
+                  "text-foreground hover:text-foreground",
                   item.active && "text-foreground font-medium"
                 )}
                 onClick={mobileMenu.closeMenu}
@@ -165,6 +179,21 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+            
+            <div className="border-t pt-2 mt-2">
+              <div className="font-medium text-foreground mb-2">Community</div>
+              <Link to="/college-community" 
+                className="block ml-4 text-foreground hover:text-foreground"
+                onClick={mobileMenu.closeMenu}>
+                College Community
+              </Link>
+              <Link to="/students-community" 
+                className="block ml-4 text-foreground hover:text-foreground"
+                onClick={mobileMenu.closeMenu}>
+                Students Community
+              </Link>
+            </div>
+            
             <div className="grid grid-cols-2 gap-2 pt-4 border-t">
               <Link to="/sign-in" onClick={mobileMenu.closeMenu}>
                 <Button variant="outline" className="w-full">Sign In</Button>

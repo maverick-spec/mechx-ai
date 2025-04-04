@@ -5,6 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Users, Lightbulb, MessageSquare, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
+import ProjectIdeaForm from "@/components/forms/ProjectIdeaForm";
 
 // Team cards data
 const teamCards = [
@@ -44,6 +48,8 @@ const teamCards = [
 ];
 
 export const CollaborationSection = () => {
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  
   return (
     <section className="py-16 md:py-24 w-full bg-muted/50 relative overflow-hidden">
       {/* Decorative pattern */}
@@ -109,13 +115,22 @@ export const CollaborationSection = () => {
                     the skills you need. Our AI will help match you with the right collaborators.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Button className="gap-2 bg-mechatronix-600 hover:bg-mechatronix-700">
-                      <Lightbulb className="h-4 w-4" />
-                      Submit Project Idea
-                    </Button>
-                    <Button variant="outline" className="gap-2">
-                      <Users className="h-4 w-4" />
-                      Browse All Teams
+                    <Dialog open={showProjectForm} onOpenChange={setShowProjectForm}>
+                      <DialogTrigger asChild>
+                        <Button className="gap-2 bg-mechatronix-600 hover:bg-mechatronix-700">
+                          <Lightbulb className="h-4 w-4" />
+                          Submit Project Idea
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <ProjectIdeaForm onClose={() => setShowProjectForm(false)} />
+                      </DialogContent>
+                    </Dialog>
+                    <Button variant="outline" className="gap-2" asChild>
+                      <Link to="/team-up">
+                        <Users className="h-4 w-4" />
+                        Browse All Teams
+                      </Link>
                     </Button>
                   </div>
                 </div>
@@ -133,9 +148,11 @@ export const CollaborationSection = () => {
         </div>
 
         <div className="mt-14 text-center">
-          <Button variant="outline" className="group">
-            View Community Forum
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <Button variant="outline" className="group" asChild>
+            <Link to="/community">
+              View Community Forum
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </Button>
         </div>
       </div>

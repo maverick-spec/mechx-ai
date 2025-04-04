@@ -23,6 +23,7 @@ import SignUp from "./pages/SignUp";
 import AISearch from "./pages/AISearch";
 import CollegeCommunity from "./pages/CollegeCommunity";
 import StudentsCommunity from "./pages/StudentsCommunity";
+import Community from "./pages/Community";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,7 @@ const App = () => {
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/college-community" element={<CollegeCommunity />} />
               <Route path="/students-community" element={<StudentsCommunity />} />
+              <Route path="/community" element={<Community />} />
               
               {/* Protected routes */}
               <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
