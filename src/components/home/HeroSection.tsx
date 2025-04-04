@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Zap } from "lucide-react";
@@ -7,55 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Safari } from "../magicui/safari";
 import { Cover } from "../ui/cover";
 import { Spotlight } from "../ui/spotlight-new";
+import { WordRotate } from "../ui/word-rotate";
 
-const textPhrases = [
+const rotatingWords = [
  "AI",
-"Robotics",
-"Automat",
-"IoT"
+ "Robotics",
+ "Automation",
+ "IoT"
 ];
 
 export const HeroSection = () => {
-  const [typedText, setTypedText] = useState("");
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [textIndex, setTextIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const typingSpeed = useRef(100);
-  const deletingSpeed = useRef(50);
-  const pauseDelay = useRef(2000);
-
-  useEffect(() => {
-    const currentPhrase = textPhrases[phraseIndex];
-    
-    const timeout = setTimeout(() => {
-      // Typing text
-      if (!isDeleting && textIndex < currentPhrase.length) {
-        setTypedText(prev => prev + currentPhrase[textIndex]);
-        setTextIndex(prev => prev + 1);
-        typingSpeed.current = 100 - Math.random() * 50;
-      } 
-      // Pause before deleting
-      else if (!isDeleting && textIndex === currentPhrase.length) {
-        setTimeout(() => setIsDeleting(true), pauseDelay.current);
-      } 
-      // Deleting text
-      else if (isDeleting && typedText.length > 0) {
-        setTypedText(prev => prev.slice(0, -1));
-        deletingSpeed.current = 50 - Math.random() * 20;
-      } 
-      // Move to next phrase
-      else if (isDeleting && typedText.length === 0) {
-        setIsDeleting(false);
-        setPhraseIndex(prev => (prev + 1) % textPhrases.length);
-        setTextIndex(0);
-      }
-    }, isDeleting ? deletingSpeed.current : typingSpeed.current);
-    
-    return () => clearTimeout(timeout);
-  }, [textIndex, isDeleting, phraseIndex, typedText]);
-
+  
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -79,10 +43,7 @@ export const HeroSection = () => {
           <Spotlight />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-syne tracking-tight">
             Future-Proof Your <Cover>Engineering</Cover> With{" "}
-            <div className="inline-block relative">
-              <span className="text-gradient">{typedText}</span>
-              <span className="absolute right-0 top-0 h-full w-0.5 bg-mechatronix-600 animate-pulse-slow" style={{ display: !isDeleting && textIndex < textPhrases[phraseIndex].length ? 'block' : 'none' }}></span>
-            </div>
+            <WordRotate words={rotatingWords} />
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 animate-fade-in font-jakarta" style={{ animationDelay: "0.2s" }}>
@@ -93,11 +54,6 @@ export const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <Button size="lg" className="bg-mechatronix-600 hover:bg-mechatronix-700" asChild>
               <Link to="/projects">Explore Projects</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="group" asChild>
-              <Link to="/premade-projects">
-                Pre-made Projects
-              </Link>
             </Button>
           </div>
 
